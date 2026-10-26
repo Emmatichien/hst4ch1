@@ -54,9 +54,6 @@
   .credit{font-size:.7rem;color:var(--doux);margin:4px 0 12px}
   .lettres{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
   .lettres .option{text-align:center;font-weight:800;margin:0}
-  .filtre{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:-12px 0 22px;font-size:.88rem;color:var(--doux)}
-  .chip{font:inherit;font-size:.85rem;background:var(--carte);border:1px solid var(--bord);border-radius:999px;padding:5px 12px;cursor:pointer;color:var(--encre)}
-  .chip.actif{background:var(--accent);border-color:var(--accent);color:#fff}
   footer{color:var(--doux);font-size:.8rem;text-align:center;margin:40px 0 16px}
 
   /* Activités */
@@ -112,12 +109,6 @@
       <span class="puce">📒 Tu étudies dans ton cahier</span>
       <span class="puce">🎯 Tu te testes ici</span>
       <span class="puce">⏱️ 2 minutes par activité</span>
-    </div>
-    <div class="filtre" role="group" aria-label="Matière à réviser">
-      <span>Matière :</span>
-      <button class="chip" data-f="1-3">Dossiers 1 à 3</button>
-      <button class="chip" data-f="4-5">Dossiers 4 et 5</button>
-      <button class="chip" data-f="tout">Tout le chapitre</button>
     </div>
 
     <section class="bloc">
@@ -460,8 +451,7 @@ function ouvrir(type){
            cc:["Cause ou conséquence ?","Causes et conséquences"],carte:["Sur la carte","Situer dans l'espace"],vf:["Vrai ou faux ?","Établir des faits"],temps:["Mets en ordre","Situer dans le temps"],paires:["Les paires","Mettre en relation des faits"],pareil:["Pareil ou pas ?","Différences et similitudes"],chg:["Ça change ?","Changements et continuités"]};
   $("act-titre").textContent=T[type][0]; $("act-oi").textContent=T[type][1];
   const src={chaine:CHAINES,lien:LIENS,cc:CC,chg:CHG,vf:VF,temps:TEMPS,paires:PAIRES,pareil:PAREIL,carte:CARTE}[type];
-  const ok=d=>FILTRE==="tout"||(FILTRE==="1-3"?d<=3:d>=4);
-  etat = { type, i:0, score:0, ordre: melanger(src.map((_,k)=>k).filter(k=>ok(src[k].d))).slice(0,5) };
+  etat = { type, i:0, score:0, ordre: melanger(src.map((_,k)=>k)).slice(0,5) };
   question();
 }
 function fermer(){ $("activite").style.display="none"; $("accueil").style.display="block"; window.scrollTo(0,0); }
@@ -605,11 +595,6 @@ function fin(){
 }
 
 document.querySelectorAll("[data-act]").forEach(b=>b.onclick=()=>ouvrir(b.dataset.act));
-let FILTRE="tout";
-try{ const f=localStorage.getItem("hqc4-ch1-filtre"); if(["1-3","4-5","tout"].includes(f)) FILTRE=f; }catch(e){}
-function majFiltre(){ document.querySelectorAll(".chip").forEach(c=>c.classList.toggle("actif",c.dataset.f===FILTRE)); }
-document.querySelectorAll(".chip").forEach(c=>c.onclick=()=>{ FILTRE=c.dataset.f; try{localStorage.setItem("hqc4-ch1-filtre",FILTRE);}catch(e){} majFiltre(); });
-majFiltre();
 $("retour").onclick=fermer;
 </script>
 </body>

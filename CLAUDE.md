@@ -36,5 +36,5 @@ Références du chapitre 1 : cahier p. 28 à 111 ; évaluation Fiche 1.2 (EV-21 
 - Modèle de structure : le site de Simon (3e secondaire). Reprendre l'ossature, pas la logique de contenu.
 - Réutiliser le gabarit du cahier du ch. 1 ; aucun élément improvisé.
 - Ne pas retenter la navigation par onglets ou diaporama pour les cartes.
-- Chaque question porte son numéro de dossier (d) ; un filtre permet aux élèves de se limiter à la matière vue.
+- Exercice de fin de chapitre : chaque activité pioche au hasard dans tout le chapitre (pas de filtre par dossier). Le champ d indique le dossier, pour référence.
 - Variables CSS `--orange` conservées dans tous les chapitres (choix voulu).
