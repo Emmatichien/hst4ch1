@@ -23,6 +23,9 @@ Ce repo est la source unique du matériel ; les autres formats en dérivent.
 - Ne jamais y déposer : examens, fiches corrigées, numérisations du manuel.
   Ce sont des références de travail, gardées hors du repo.
 - Les questionnaires s'en inspirent sans jamais les reproduire.
+- Les évaluations de l'éditeur (ex. Fiche 2.2) servent d'examens réels en classe :
+  ne jamais reprendre leurs documents, leurs formulations ni leurs chaînes causales exactes.
+  Même contenu = permis ; même question = interdit.
 
 ## Processus
 - Tâche en plusieurs étapes → critères de réussite + plan de vérification avant de produire.
