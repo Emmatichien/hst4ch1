@@ -72,6 +72,7 @@
   .question{font-weight:700;margin:12px 0}
   .option{font:inherit;text-align:left;width:100%;background:#fff;border:1px solid var(--bord);
     border-radius:12px;padding:12px;margin-bottom:8px;cursor:pointer}
+  .option:disabled{color:inherit;cursor:default}
   .option.bonne{background:var(--vert-clair);border-color:var(--vert)}
   .option.mauvaise{background:var(--rouge-clair);border-color:var(--rouge)}
   .retro{border-radius:12px;padding:12px;margin-top:12px}
@@ -122,7 +123,7 @@
         <div class="oi"><h3>Différences et similitudes</h3><div class="desc">Pareil ou différent ?</div>
           <div class="acts"><button class="act" disabled><b>Bientôt</b></button></div></div>
         <div class="oi"><h3>Changements et continuités</h3><div class="desc">Ce qui change, ce qui reste</div>
-          <div class="acts"><button class="act" disabled><b>Bientôt</b></button></div></div>
+          <div class="acts"><button class="act" data-act="chg"><b>Ça change ?</b><i>★ 5 questions</i></button></div></div>
       </div>
     </section>
 
@@ -130,7 +131,7 @@
       <div class="bloc-titre"><div class="num">3</div><h2>EXPLIQUER</h2><span>Pourquoi c'est arrivé, et ce que ça a entraîné</span></div>
       <div class="grille">
         <div class="oi"><h3>Causes et conséquences</h3><div class="desc">Parce que… ou alors… ?</div>
-          <div class="acts"><button class="act" disabled><b>Bientôt</b></button></div></div>
+          <div class="acts"><button class="act" data-act="cc"><b>Cause ou conséquence ?</b><i>★ 5 questions</i></button></div></div>
         <div class="oi"><h3>Liens de causalité</h3><div class="desc">Trois faits, deux liens</div>
           <div class="acts">
             <button class="act" data-act="chaine"><b>La chaîne</b><i>★ 5 questions</i></button>
@@ -222,13 +223,54 @@ const LIENS = [
     ]}
 ];
 
+
+/* « Cause ou conséquence ? » : un fait central, un fait relié. */
+const CC = [
+  { page: 118, centre: "La création de la marine canadienne",
+    fait: "Une rivalité militaire s'installe entre le Royaume-Uni et l'Allemagne",
+    bonne: "cause", expl: "La rivalité pousse le Royaume-Uni à faire pression sur le Canada pour qu'il contribue à la défense de l'Empire ; Laurier choisit de créer une marine canadienne." },
+  { page: 118, centre: "Les impérialistes et les nationalistes canadiens-français s'opposent sur la guerre des Boers",
+    fait: "Laurier n'impose pas la conscription et n'envoie que des volontaires",
+    bonne: "conséquence", expl: "Pour concilier les deux camps, Laurier adopte une position de compromis : il appuie la participation, mais sans obliger personne à s'engager." },
+  { page: 122, centre: "La relance de la colonisation et l'ouverture de l'Abitibi",
+    fait: "Le poids démographique du Québec au sein du Canada diminue, notamment à cause de l'émigration vers les États-Unis",
+    bonne: "cause", expl: "Pour freiner cet exode, le gouvernement du Québec, soutenu par le clergé, relance la colonisation de nouvelles régions." },
+  { page: 128, centre: "Le Québec profite fortement de l'essor industriel du début du 20e siècle",
+    fait: "Son territoire est riche en ressources naturelles et traversé de rivières au fort potentiel hydroélectrique",
+    bonne: "cause", expl: "Ces ressources fournissent les matières premières aux industries et l'énergie hydroélectrique nécessaire à leur développement." },
+  { page: 172, centre: "Le gouvernement fédéral organise un plébiscite sur la conscription",
+    fait: "Le gouvernement fédéral impose la conscription",
+    bonne: "conséquence", expl: "Le plébiscite libère le gouvernement de sa promesse de ne pas imposer la conscription : les Canadiens anglais, majoritaires, ont voté pour." }
+];
+
+/* « Ça change ? » : avant / après, changement ou continuité. */
+const CHG = [
+  { page: 128, avant: "Le gouvernement Macdonald impose des droits de douane élevés sur les produits importés",
+    apres: "Le gouvernement Laurier garde en place des droits de douane élevés pour protéger l'industrie canadienne",
+    bonne: "continuité", expl: "Laurier poursuit la politique protectionniste mise en place par Macdonald." },
+  { page: 128, avant: "Première phase d'industrialisation : les usines fonctionnent surtout à la vapeur et au charbon",
+    apres: "Deuxième phase d'industrialisation : de nouvelles sources d'énergie apparaissent, notamment l'hydroélectricité",
+    bonne: "changement", expl: "La deuxième phase est marquée par de nouvelles sources d'énergie et de nouveaux secteurs industriels." },
+  { page: 137, avant: "Fin du 19e siècle : les conditions de travail des ouvriers sont très difficiles",
+    apres: "Début du 20e siècle : les ouvriers sont souvent démunis face à leurs employeurs et travaillent dans de dures conditions",
+    bonne: "continuité", expl: "Les gains obtenus ne suffisent pas : les ouvriers restent souvent démunis face à leurs employeurs, d'où la poursuite de la lutte syndicale." },
+  { page: 156, avant: "Avant la Première Guerre mondiale : le Canada dépend du Royaume-Uni pour sa politique extérieure",
+    apres: "Après la guerre : le Canada siège à la Société des Nations en tant que pays, et non comme membre de la délégation britannique",
+    bonne: "changement", expl: "Sa contribution à la guerre permet au Canada d'obtenir une reconnaissance internationale distincte du Royaume-Uni." },
+  { page: 172, avant: "Pendant la Première Guerre mondiale : le gouvernement fédéral applique la Loi sur les mesures de guerre",
+    apres: "Au début de la Seconde Guerre mondiale : le gouvernement fédéral planifie l'économie et contrôle les prix grâce à la Loi sur les mesures de guerre",
+    bonne: "continuité", expl: "En 1939, le gouvernement fédéral reprend la même loi qu'en 1914-1918 pour planifier l'économie et diriger l'effort de guerre." }
+];
+
 const melanger = t => { const c=[...t]; for(let i=c.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[c[i],c[j]]=[c[j],c[i]];} return c; };
 const $ = id => document.getElementById(id);
 let etat = null;
 
 function ouvrir(type){
   $("accueil").style.display="none"; $("activite").style.display="block";
-  $("act-titre").textContent = type==="chaine" ? "La chaîne" : "Le bon lien";
+  const T={chaine:["La chaîne","Liens de causalité"],lien:["Le bon lien","Liens de causalité"],
+           cc:["Cause ou conséquence ?","Causes et conséquences"],chg:["Ça change ?","Changements et continuités"]};
+  $("act-titre").textContent=T[type][0]; $("act-oi").textContent=T[type][1];
   etat = { type, i:0, score:0, ordre: melanger([...Array(5).keys()]) };
   question();
 }
@@ -240,7 +282,8 @@ function question(){
   etoiles();
   if(etat.i>=5) return fin();
   const n = etat.ordre[etat.i];
-  etat.type==="chaine" ? chaine(CHAINES[n]) : lien(LIENS[n]);
+  ({chaine:()=>chaine(CHAINES[n]), lien:()=>lien(LIENS[n]),
+    cc:()=>binaire(CC[n],["cause","conséquence"]), chg:()=>binaire(CHG[n],["changement","continuité"])})[etat.type]();
 }
 
 function chaine(q){
@@ -279,6 +322,25 @@ function lien(q){
     $("retro").innerHTML = `<div class="retro ${o.ok?'bien':'mal'}">${o.ok?'<b>Exact.</b>':'<b>Non. La bonne explication :</b><br>'+q.bonne}
       <br><small>À l'épreuve, c'est cette phrase qu'on te demande d'écrire entre les deux faits. Revois la page ${q.page} de ton cahier.</small></div>
       <button class="suivant">Suivant ›</button>`;
+    etoiles(); $("retro").querySelector(".suivant").onclick=()=>{etat.i++;question();};
+  });
+}
+
+function binaire(q,choix){
+  const corps=$("act-corps");
+  const haut = q.centre
+    ? `<div class="lien-ab"><small style="color:var(--doux)">Fait central</small><div><b>${q.centre}</b></div></div>
+       <div class="lien-ab"><small style="color:var(--doux)">Ce fait-ci</small><div>${q.fait}</div></div>
+       <div class="question">Par rapport au fait central, est-ce une cause ou une conséquence ?</div>`
+    : `<div class="lien-ab"><small style="color:var(--doux)">Avant</small><div>${q.avant}</div>
+       <div class="fleche">↓</div><small style="color:var(--doux)">Après</small><div>${q.apres}</div></div>
+       <div class="question">Est-ce un changement ou une continuité ?</div>`;
+  corps.innerHTML = haut + `<div class="zone">${choix.map(c=>`<button class="option" data-c="${c}" style="text-align:center;font-weight:700">${c[0].toUpperCase()+c.slice(1)}</button>`).join("")}</div><div id="retro"></div>`;
+  corps.querySelectorAll(".option").forEach(b=>b.onclick=()=>{
+    const ok = b.dataset.c===q.bonne; if(ok) etat.score++;
+    corps.querySelectorAll(".option").forEach(x=>{x.disabled=true; if(x.dataset.c===q.bonne) x.classList.add("bonne"); else if(x===b) x.classList.add("mauvaise");});
+    $("retro").innerHTML = `<div class="retro ${ok?'bien':'mal'}"><b>${ok?'Exact.':'Non, c\'est une '+q.bonne+'.'}</b><br>${q.expl}
+      <br><small>Revois la page ${q.page} de ton cahier.</small></div><button class="suivant">Suivant ›</button>`;
     etoiles(); $("retro").querySelector(".suivant").onclick=()=>{etat.i++;question();};
   });
 }
