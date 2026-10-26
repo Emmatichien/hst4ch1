@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapitre 1 · HQC 4</title>
+<style>
+  :root{
+    --fond:#fbf3ea; --carte:#fffaf4; --encre:#2b2420; --doux:#7a6a5c;
+    --bord:#e8d9c6; --accent:#a8501c; --accent-clair:#f7e6da;
+    --vert:#2e7d4f; --vert-clair:#e3f2e8; --rouge:#b23a3a; --rouge-clair:#f8e4e4;
+    --or:#b07a2a;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--fond);color:var(--encre);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.45}
+  .page{max-width:960px;margin:0 auto;padding:16px}
+  header.haut{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+  .logo{width:36px;height:36px;border-radius:10px;background:var(--accent);color:#fff;
+    display:grid;place-items:center;font-weight:800}
+  .haut small{display:block;color:var(--doux);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase}
+  .haut strong{font-size:1.05rem}
+  .hero{background:linear-gradient(135deg,#7d3a12,#a8501c 55%,#c9763c);color:#fff;
+    border-radius:18px;padding:28px 24px}
+  .hero .sur{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;opacity:.85}
+  .hero h1{margin:.3em 0 .4em;font-size:clamp(1.4rem,4vw,2rem);line-height:1.15}
+  .hero p{margin:0;max-width:34em;opacity:.95}
+  .puces{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 26px}
+  .puce{background:var(--carte);border:1px solid var(--bord);border-radius:999px;padding:5px 12px;font-size:.82rem}
+  .bloc{margin:28px 0}
+  .bloc-titre{display:flex;align-items:baseline;gap:10px;margin-bottom:12px}
+  .bloc-titre .num{width:30px;height:30px;border-radius:50%;background:var(--accent);color:#fff;
+    display:grid;place-items:center;font-weight:800;flex:none}
+  .bloc-titre h2{margin:0;font-size:1.25rem;letter-spacing:.04em}
+  .bloc-titre span{color:var(--doux);font-size:.9rem}
+  .grille{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+  .oi{background:var(--carte);border:1px solid var(--bord);border-radius:14px;padding:14px}
+  .oi h3{margin:0;font-size:1rem}
+  .oi .desc{color:var(--doux);font-size:.85rem;margin:2px 0 10px}
+  .acts{display:flex;flex-wrap:wrap;gap:8px}
+  .act{font:inherit;text-align:left;background:#fff;border:1px solid var(--bord);border-radius:10px;
+    padding:10px 12px;min-width:120px;cursor:pointer}
+  .act:hover:not(:disabled){border-color:var(--accent)}
+  .act b{display:block;font-size:.92rem}
+  .act i{font-style:normal;font-size:.75rem;color:var(--or)}
+  .act:disabled{cursor:default;opacity:.55}
+  .act.examen{border-color:var(--accent);background:var(--accent-clair)}
+  .badge{display:inline-block;font-size:.68rem;background:var(--accent);color:#fff;border-radius:6px;padding:1px 6px;margin-left:4px}
+  .carte{position:relative;border-radius:12px;overflow:hidden;border:1px solid var(--bord)}
+  .carte img{display:block;width:100%;height:auto}
+  .lettre{position:absolute;transform:translate(-50%,-50%);width:28px;height:28px;border-radius:50%;
+    background:var(--accent);color:#fff;font-weight:800;font-size:.9rem;display:grid;place-items:center;
+    box-shadow:0 0 0 2px #fff}
+  .credit{font-size:.7rem;color:var(--doux);margin:4px 0 12px}
+  .lettres{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+  .lettres .option{text-align:center;font-weight:800;margin:0}
+  footer{color:var(--doux);font-size:.8rem;text-align:center;margin:40px 0 16px}
+
+  /* Activités */
+  #activite{display:none}
+  .act-haut{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+  .retour{font:inherit;background:var(--carte);border:1px solid var(--bord);border-radius:999px;padding:6px 14px;cursor:pointer}
+  .act-haut h2{margin:0;font-size:1.15rem}
+  .act-haut small{display:block;color:var(--accent);font-size:.78rem}
+  .etoiles{text-align:center;font-size:1.4rem;letter-spacing:6px;color:var(--bord);margin:6px 0 14px}
+  .etoiles .ok{color:var(--or)}
+  .consigne{color:var(--doux);margin:0 0 14px}
+  .zone{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media (max-width:640px){.zone{grid-template-columns:1fr}}
+  .cases{background:#f3e8db;border-radius:14px;padding:12px}
+  .case{border:2px dashed var(--bord);border-radius:10px;padding:10px;min-height:48px;background:var(--fond)}
+  .case.pleine{border-style:solid;border-color:var(--accent);background:#fff}
+  .alors{font-size:.72rem;color:var(--or);font-weight:700;margin:4px 8px}
+  .choix{display:flex;flex-direction:column;gap:10px}
+  .carte-fait{font:inherit;text-align:left;background:#fff;border:1px solid var(--bord);
+    border-bottom:3px solid #c9a978;border-radius:12px;padding:12px;cursor:pointer}
+  .carte-fait:disabled{opacity:.35;cursor:default}
+  .lien-ab{background:var(--carte);border:1px solid var(--bord);border-radius:14px;padding:14px;margin-bottom:12px}
+  .lien-ab .fleche{color:var(--or);font-weight:700;margin:6px 0}
+  .question{font-weight:700;margin:12px 0}
+  .option{font:inherit;text-align:left;width:100%;background:#fff;border:1px solid var(--bord);
+    border-radius:12px;padding:12px;margin-bottom:8px;cursor:pointer}
+  .option:disabled{color:inherit;cursor:default}
+  .option.bonne{background:var(--vert-clair);border-color:var(--vert)}
+  .option.mauvaise{background:var(--rouge-clair);border-color:var(--rouge)}
+  .retro{border-radius:12px;padding:12px;margin-top:12px}
+  .retro.bien{background:var(--vert-clair)}
+  .retro.mal{background:var(--rouge-clair)}
+  .suivant{font:inherit;margin-top:12px;background:var(--accent);color:#fff;border:0;border-radius:10px;padding:10px 18px;cursor:pointer}
+  .fin{text-align:center;padding:30px 10px}
+  .fin .score{font-size:2rem;font-weight:800;color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="haut">
+    <div class="logo">4</div>
+    <div><small>HQC · 4e secondaire</small><strong>Chapitre 1</strong></div>
+  </header>
+
+  <!-- ACCUEIL -->
+  <main id="accueil">
+    <section class="hero">
+      <div class="sur">Chapitre 1 · 1840 à 1896 · Dossiers 1 à 3</div>
+      <h1>La formation du régime fédéral canadien</h1>
+      <p>Choisis une opération intellectuelle et teste-toi. Une erreur ? Tu as la bonne réponse et la page de ton cahier.</p>
+    </section>
+    <div class="puces">
+      <span class="puce">📒 Tu étudies dans ton cahier</span>
+      <span class="puce">🎯 Tu te testes ici</span>
+      <span class="puce">⏱️ 2 minutes par activité</span>
+    </div>
+
+    <section class="bloc">
+      <div class="bloc-titre"><div class="num">1</div><h2>REPÉRER</h2><span>Le bon fait, au bon moment, au bon endroit</span></div>
+      <div class="grille">
+        <div class="oi"><h3>Établir des faits</h3><div class="desc">Un nom, un lieu, un fait précis</div>
+          <div class="acts"><button class="act" data-act="vf"><b>Vrai ou faux ?</b><i>★ 5 questions</i></button></div></div>
+        <div class="oi"><h3>Situer dans le temps</h3><div class="desc">L'ordre chronologique</div>
+          <div class="acts"><button class="act" data-act="temps"><b>Mets en ordre</b><i>★ 5 questions</i></button></div></div>
+        <div class="oi"><h3>Situer dans l'espace</h3><div class="desc">La bonne lettre sur la carte</div>
+          <div class="acts"><button class="act" disabled><b>Bientôt</b></button></div></div>
+      </div>
+    </section>
+
+    <section class="bloc">
+      <div class="bloc-titre"><div class="num">2</div><h2>RELIER</h2><span>Associer, comparer, voir ce qui change</span></div>
+      <div class="grille">
+        <div class="oi"><h3>Mettre en relation des faits</h3><div class="desc">Chaque élément au bon endroit</div>
+          <div class="acts"><button class="act" data-act="paires"><b>Les paires</b><i>★ 5 questions</i></button></div></div>
+        <div class="oi"><h3>Différences et similitudes</h3><div class="desc">Pareil ou différent ?</div>
+          <div class="acts"><button class="act" data-act="pareil"><b>Pareil ou pas ?</b><i>★ 5 questions</i></button></div></div>
+        <div class="oi"><h3>Changements et continuités</h3><div class="desc">Ce qui change, ce qui reste</div>
+          <div class="acts"><button class="act" data-act="chg"><b>Ça change ?</b><i>★ 5 questions</i></button></div></div>
+      </div>
+    </section>
+
+    <section class="bloc">
+      <div class="bloc-titre"><div class="num">3</div><h2>EXPLIQUER</h2><span>Pourquoi c'est arrivé, et ce que ça a entraîné</span></div>
+      <div class="grille">
+        <div class="oi"><h3>Causes et conséquences</h3><div class="desc">Parce que… ou alors… ?</div>
+          <div class="acts"><button class="act" data-act="cc"><b>Cause ou conséquence ?</b><i>★ 5 questions</i></button></div></div>
+        <div class="oi"><h3>Liens de causalité</h3><div class="desc">Trois faits, deux liens</div>
+          <div class="acts">
+            <button class="act" data-act="chaine"><b>La chaîne</b><i>★ 5 questions</i></button>
+            <button class="act examen" data-act="lien"><b>Le bon lien <span class="badge">Épreuve</span></b><i>★ 5 questions</i></button>
+          </div></div>
+      </div>
+    </section>
+
+    <footer>Histoire du Québec et du Canada · 4e secondaire<br>Aucun compte, aucun cookie, aucune statistique.</footer>
+  </main>
+
+  <!-- ACTIVITÉ -->
+  <section id="activite">
+    <div class="act-haut">
+      <button class="retour" id="retour">‹ Retour</button>
+      <div><h2 id="act-titre"></h2><small id="act-oi">Liens de causalité</small></div>
+    </div>
+    <div class="etoiles" id="etoiles"></div>
+    <div id="act-corps"></div>
+  </section>
+</div>
+
+<script>
+/* Contenu : chaque fait est tiré du cahier (TC Média, chapitre 1, dossiers 1 à 3). La page est indiquée pour la révision. */
+const CHAINES = [
+  { page: 32, sujet: "L'Acte d'Union",
+    faits: [
+      "Lord Durham recommande d'unir le Haut-Canada et le Bas-Canada",
+      "Londres adopte l'Acte d'Union, qui crée la Province du Canada",
+      "Les députés canadiens-français deviennent minoritaires à la Chambre d'assemblée"
+    ]},
+  { page: 36, sujet: "Vers le gouvernement responsable",
+    faits: [
+      "Londres abandonne sa politique protectionniste",
+      "Londres incite ses colonies à devenir plus autonomes",
+      "La Province du Canada obtient la responsabilité ministérielle"
+    ]},
+  { page: 47, sujet: "La guerre de Sécession et la défense des colonies",
+    faits: [
+      "Le Royaume-Uni soutient les États du Sud de plusieurs manières pendant la guerre de Sécession",
+      "Les États du Nord menacent la Province du Canada d'annexion",
+      "Les colonies britanniques envisagent de s'unir pour assurer ensemble leur protection"
+    ]},
+  { page: 50, sujet: "La Grande Coalition",
+    faits: [
+      "L'instabilité ministérielle rend la gestion de la colonie difficile",
+      "George Brown propose une alliance aux chefs conservateurs : la Grande Coalition",
+      "La coalition lance l'idée d'une confédération des colonies britanniques"
+    ]},
+  { page: "62 et 63", sujet: "Les transports et l'industrie",
+    faits: [
+      "Les échanges commerciaux augmentent en Amérique du Nord",
+      "Les gouvernements et les entrepreneurs investissent dans les canaux et les chemins de fer",
+      "L'industrie forestière et l'industrie métallurgique se développent"
+    ]}
+];
+
+/* « Le bon lien » : justifier UN lien de chaque chaîne. */
+const LIENS = [
+  { page: 32, a: "L'Acte d'Union", b: "Les députés canadiens-français deviennent minoritaires",
+    bonne: "Chaque région obtient 42 députés, même si le Bas-Canada est plus peuplé : les Canadiens français ne sont plus majoritaires",
+    autres: [
+      "L'Acte d'Union retire le droit de vote aux francophones du Bas-Canada jusqu'à l'obtention du gouvernement responsable",
+      "L'Acte d'Union réserve la majorité des sièges de la Chambre aux colons britanniques arrivés dans la colonie après 1840"
+    ]},
+  { page: 36, a: "L'abandon du protectionnisme britannique", b: "Les colonies deviennent plus autonomes",
+    bonne: "En cessant de privilégier ses colonies sur le plan économique, Londres les pousse à être plus autonomes, ce qui ouvre la voie à l'autonomie politique",
+    autres: [
+      "Ruinée par la fin du protectionnisme, Londres n'a plus les moyens de payer les gouverneurs, les soldats et les fonctionnaires de ses colonies d'Amérique",
+      "Les colonies menacent de se joindre aux États-Unis si Londres refuse de rétablir les tarifs préférentiels qui avantageaient leurs produits agricoles"
+    ]},
+  { page: 47, a: "La menace d'annexion par les États du Nord", b: "Les colonies envisagent de s'unir",
+    bonne: "Incapable de se défendre seule, la Province du Canada dépend du Royaume-Uni, qui trouve de plus en plus coûteux d'envoyer des troupes pour la protéger",
+    autres: [
+      "Les États du Nord exigent que les colonies britanniques s'unissent avant d'accepter de renouveler le traité de réciprocité signé avec elles en 1854",
+      "Le Royaume-Uni interdit à ses colonies de lever leurs propres troupes, ce qui les oblige à fusionner leurs gouvernements pour obtenir une armée"
+    ]},
+  { page: 50, a: "La formation de la Grande Coalition", b: "Le projet de confédération",
+    bonne: "Formée pour mettre fin à l'instabilité ministérielle, la coalition propose d'unir les colonies pour créer un ensemble économique et mieux se défendre",
+    autres: [
+      "Ayant enfin obtenu la double majorité, la coalition décide seule d'unir toutes les colonies sans consulter leurs gouvernements ni celui de Londres",
+      "La coalition réunit les réformistes et les conservateurs dans le but de convaincre Londres de rétablir son ancienne politique protectionniste"
+    ]},
+  { page: 63, a: "La construction des canaux et des chemins de fer", b: "Le développement des industries forestière et métallurgique",
+    bonne: "Pour construire les canaux et fabriquer les rails et les locomotives, il faut de grandes quantités de bois et de métaux",
+    autres: [
+      "Les canaux remplacent les forêts le long du fleuve, ce qui oblige les entrepreneurs à se tourner vers les mines",
+      "Les gouvernements interdisent l'importation de bois et de métaux afin de protéger les nouvelles compagnies ferroviaires"
+    ]}
+];
+
+/* « Cause ou conséquence ? » */
+const CC = [
+  { page: 37, centre: "La création des réserves indiennes au Bas-Canada (1851)",
+    fait: "Les territoires de chasse et de pêche des Premières Nations sont touchés par l'exploitation forestière et la colonisation",
+    bonne: "cause", expl: "C'est dans ce contexte, et en s'inspirant de la commission Bagot, que le Parlement crée des réserves à l'usage exclusif des Premières Nations." },
+  { page: 37, centre: "L'incendie du parlement de Montréal (1849)",
+    fait: "L'alliance réformiste fait adopter une loi qui indemnise des victimes des rébellions de 1837-1838",
+    bonne: "cause", expl: "Comme les victimes indemnisées sont surtout des Canadiens français, cette loi déclenche une réaction violente chez certains Canadiens anglais, qui incendient le parlement." },
+  { page: 66, centre: "L'abolition du régime seigneurial (1854)",
+    fait: "Les censitaires peuvent racheter leurs terres, qui deviennent des propriétés privées",
+    bonne: "conséquence", expl: "L'abolition supprime les privilèges des seigneurs ; les entreprises pourront ensuite acquérir des terres et exploiter les cours d'eau." },
+  { page: 47, centre: "La fin du traité de réciprocité (1866)",
+    fait: "L'idée d'une union de toutes les colonies britanniques d'Amérique du Nord gagne des partisans",
+    bonne: "conséquence", expl: "Privée du marché américain, la Province du Canada doit augmenter ses échanges avec les colonies voisines : l'union devient une option attrayante." },
+  { page: 66, centre: "Après 1870, les agriculteurs privilégient la production laitière",
+    fait: "Cette production exige peu d'employés et est moins exposée aux variations climatiques",
+    bonne: "cause", expl: "Ces avantages, et la grande diversité de produits (lait, beurre, fromage, crème), font de l'industrie laitière le principal secteur agricole du Québec à la fin du siècle." }
+];
+
+/* « Ça change ? » */
+const CHG = [
+  { page: 32, avant: "Avant 1840 : le Haut-Canada et le Bas-Canada sont deux colonies distinctes",
+    apres: "Après l'Acte d'Union : le Haut-Canada et le Bas-Canada sont réunis dans la Province du Canada",
+    bonne: "changement", expl: "L'Acte d'Union crée une seule colonie, avec une seule Chambre d'assemblée : c'est une union législative." },
+  { page: 33, avant: "Avant 1840 : les lois civiles françaises s'appliquent au Bas-Canada",
+    apres: "Après l'Acte d'Union : dans le Bas-Canada, les affaires civiles sont réglées selon les lois civiles françaises",
+    bonne: "continuité", expl: "L'Acte d'Union maintient les lois civiles françaises dans le Bas-Canada, même si l'anglais devient la seule langue officielle." },
+  { page: 36, avant: "Avant 1848 : les membres du Conseil exécutif sont nommés par le gouverneur",
+    apres: "À partir de 1848 : les membres du Conseil exécutif sont choisis parmi les élus du parti majoritaire",
+    bonne: "changement", expl: "Avec la responsabilité ministérielle, le Conseil exécutif doit avoir l'appui de la majorité des députés pour rester au pouvoir." },
+  { page: 36, avant: "Avant 1848 : le Royaume-Uni dirige les relations de la colonie avec les autres États",
+    apres: "Après 1848 : le Royaume-Uni gère les affaires extérieures de la Province du Canada",
+    bonne: "continuité", expl: "Le gouvernement responsable donne plus d'autonomie en affaires intérieures, mais la Province du Canada demeure une colonie." },
+  { page: 59, avant: "Avant l'industrialisation : un artisan exécute toutes les étapes de la fabrication d'un bien",
+    apres: "Avec l'industrialisation : la production est divisée en tâches simples confiées à plusieurs ouvriers",
+    bonne: "changement", expl: "La mécanisation et la division du travail permettent de produire plus de biens, plus rapidement." }
+];
+
+/* « Vrai ou faux ? » */
+const VF = [
+  { page: 32, enonce: "Dans son rapport, Lord Durham recommande d'unir le Haut-Canada et le Bas-Canada.", bonne: "vrai",
+    expl: "Durham voit l'union comme une solution aux conflits ; selon lui, elle mènera à l'assimilation des Canadiens français." },
+  { page: 33, enonce: "Avec l'Acte d'Union, le français devient la seule langue officielle de la Province du Canada.", bonne: "faux",
+    expl: "C'est l'anglais qui devient la seule langue officielle de la Province du Canada." },
+  { page: 33, enonce: "Entre 1841 et 1866, la capitale de la Province du Canada déménage à plusieurs reprises.", bonne: "vrai",
+    expl: "Kingston, Montréal, Toronto et Québec s'échangent le titre ; la reine Victoria désigne Ottawa en 1857, et le Parlement s'y installe en 1866." },
+  { page: 44, enonce: "Le traité de réciprocité de 1854 impose des droits de douane élevés sur les matières premières échangées avec les États-Unis.", bonne: "faux",
+    expl: "C'est l'inverse : le traité permet d'échanger des matières premières et des produits agricoles sans payer de droits de douane." },
+  { page: 37, enonce: "En 1849, le parlement de la Province du Canada, situé à Montréal, est incendié.", bonne: "vrai",
+    expl: "Certains Canadiens anglais, en colère contre la loi sur l'indemnisation, saccagent et incendient le parlement." }
+];
+
+/* « Mets en ordre » : dates révélées seulement dans la rétroaction. */
+const TEMPS = [
+  { page: "32 à 37", items: [["L'adoption de l'Acte d'Union",1840],["La formation de l'alliance Baldwin-LaFontaine",1841],["Le dépôt du rapport de la commission Bagot",1844],["L'obtention de la responsabilité ministérielle",1848]] },
+  { page: "35 à 45", items: [["La fin du protectionnisme britannique",1846],["L'incendie du parlement de Montréal",1849],["La fondation de la Compagnie du Grand Tronc",1852],["La signature du traité de réciprocité",1854]] },
+  { page: "46 à 66", items: [["L'abolition du régime seigneurial",1854],["Le début de la guerre de Sécession",1861],["La formation de la Grande Coalition",1864],["La fin du traité de réciprocité",1866]] },
+  { page: "37 à 66", items: [["La création des réserves indiennes au Bas-Canada",1851],["L'abolition du régime seigneurial",1854],["L'entrée en vigueur du Code civil du Bas-Canada",1866],["L'ouverture officielle de l'Intercolonial",1876]] },
+  { page: "36 à 63", items: [["L'obtention de la responsabilité ministérielle",1848],["La signature du traité de réciprocité",1854],["La formation de la Grande Coalition",1864],["L'ouverture officielle de l'Intercolonial",1876]] }
+];
+
+/* « Les paires » */
+const PAIRES = [
+  { page: 32, desc: "Auteur du rapport de 1839 qui recommande d'unir les deux Canadas", bonne: "Lord Durham" },
+  { page: 35, desc: "Chef des réformistes du Haut-Canada, ardent défenseur du principe du gouvernement responsable", bonne: "Robert Baldwin" },
+  { page: 35, desc: "Chef des réformistes du Bas-Canada, il défend les droits des Canadiens français", bonne: "Louis-Hippolyte LaFontaine" },
+  { page: 36, desc: "Gouverneur qui demande en 1848 de former le premier gouvernement responsable", bonne: "Lord Elgin" },
+  { page: 37, desc: "Gouverneur qui lance en 1842 une commission d'enquête sur l'administration des Affaires indiennes", bonne: "Charles Bagot" }
+];
+
+/* « Pareil ou pas ? » */
+const PAREIL = [
+  { page: 35, sujet: "Le changement politique dans la Province du Canada, en 1841", a: "Les réformistes", b: "Les conservateurs (tories)", bonne: "différent",
+    expl: "Les réformistes réclament un gouvernement responsable ; les tories ne veulent aucun changement, car ils exercent une influence sur les institutions nommées." },
+  { page: 35, sujet: "Le gouvernement responsable", a: "Robert Baldwin", b: "Louis-Hippolyte LaFontaine", bonne: "pareil",
+    expl: "Les deux chefs réformistes s'allient pour obtenir le gouvernement responsable." },
+  { page: 42, sujet: "La représentation proportionnelle à la population, dans les années 1850", a: "Les députés du Haut-Canada (Clear Grits)", b: "Les députés du Bas-Canada", bonne: "différent",
+    expl: "Le Haut-Canada, devenu plus peuplé, la réclame ; le Bas-Canada s'y oppose, car ses députés deviendraient moins nombreux." },
+  { page: 52, sujet: "Le projet de confédération, après les premières négociations", a: "Terre-Neuve", b: "L'Île-du-Prince-Édouard", bonne: "pareil",
+    expl: "Craignant d'être sous-représentées en raison de leur faible population, les deux colonies se retirent du projet." },
+  { page: 46, sujet: "L'esclavage, au moment de la guerre de Sécession", a: "Les États du Nord", b: "Les États du Sud", bonne: "différent",
+    expl: "Le Nord souhaite la fin de l'esclavage ; le Sud, dont l'économie repose sur la culture du coton, s'y oppose et fait sécession." }
+];
+
+/* « Sur la carte » : en attente d'une carte libre de droits de 1867. */
+const CARTE = [];
+const LETTRES = {};
+const CARTE_IMG = "";
+
+const melanger = t => { const c=[...t]; for(let i=c.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[c[i],c[j]]=[c[j],c[i]];} return c; };
+const $ = id => document.getElementById(id);
+let etat = null;
+
+function ouvrir(type){
+  $("accueil").style.display="none"; $("activite").style.display="block";
+  const T={chaine:["La chaîne","Liens de causalité"],lien:["Le bon lien","Liens de causalité"],
+           cc:["Cause ou conséquence ?","Causes et conséquences"],carte:["Sur la carte","Situer dans l'espace"],vf:["Vrai ou faux ?","Établir des faits"],temps:["Mets en ordre","Situer dans le temps"],paires:["Les paires","Mettre en relation des faits"],pareil:["Pareil ou pas ?","Différences et similitudes"],chg:["Ça change ?","Changements et continuités"]};
+  $("act-titre").textContent=T[type][0]; $("act-oi").textContent=T[type][1];
+  etat = { type, i:0, score:0, ordre: melanger([...Array(5).keys()]) };
+  question();
+}
+function fermer(){ $("activite").style.display="none"; $("accueil").style.display="block"; window.scrollTo(0,0); }
+function etoiles(){
+  $("etoiles").innerHTML = [0,1,2,3,4].map(k=>`<span class="${k<etat.score?'ok':''}">★</span>`).join("");
+}
+function question(){
+  etoiles();
+  if(etat.i>=5) return fin();
+  const n = etat.ordre[etat.i];
+  ({chaine:()=>chaine(CHAINES[n]), lien:()=>lien(LIENS[n]),
+    carte:()=>carte(CARTE[n]), vf:()=>binaire(VF[n],["vrai","faux"]), pareil:()=>binaire(PAREIL[n],["pareil","différent"]),
+    temps:()=>temps(TEMPS[n]), paires:()=>paires(PAIRES[n]), cc:()=>binaire(CC[n],["cause","conséquence"]), chg:()=>binaire(CHG[n],["changement","continuité"])})[etat.type]();
+}
+
+function chaine(q){
+  const corps=$("act-corps"); let place=[];
+  const cartes = melanger(q.faits.map((f,k)=>({f,k})));
+  corps.innerHTML = `<h3 style="margin:0 0 4px">Remets la chaîne dans l'ordre</h3>
+    <p class="consigne">${q.sujet} — touche le fait de départ, puis ce qu'il entraîne.</p>
+    <div class="zone"><div class="cases">
+      ${[0,1,2].map(k=>`${k?'<div class="alors">↓ ALORS</div>':''}<div class="case" id="c${k}">${k+1}. ${k?'…':'Le fait de départ'}</div>`).join("")}
+    </div><div class="choix">${cartes.map(c=>`<button class="carte-fait" data-k="${c.k}">${c.f}</button>`).join("")}</div></div>
+    <div id="retro"></div>`;
+  corps.querySelectorAll(".carte-fait").forEach(b=>b.onclick=()=>{
+    b.disabled=true; const k=+b.dataset.k, pos=place.length; place.push(k);
+    const c=$("c"+pos); c.textContent=(pos+1)+". "+q.faits[k]; c.classList.add("pleine");
+    if(place.length===3){
+      const ok = place.every((v,i)=>v===i); if(ok) etat.score++;
+      $("retro").innerHTML = `<div class="retro ${ok?'bien':'mal'}">${ok?'<b>Bravo, la chaîne tient.</b>':
+        '<b>Pas tout à fait. Le bon ordre :</b><br>'+q.faits.map((f,i)=>(i+1)+". "+f).join("<br>")}
+        <br><small>Revois ${typeof q.page==='string'?'les pages':'la page'} ${q.page} de ton cahier.</small></div>
+        <button class="suivant">Suivant ›</button>`;
+      etoiles(); $("retro").querySelector(".suivant").onclick=()=>{etat.i++;question();};
+    }
+  });
+}
+
+function lien(q){
+  const corps=$("act-corps");
+  const opts = melanger([{t:q.bonne,ok:true},...q.autres.map(t=>({t,ok:false}))]);
+  corps.innerHTML = `<div class="lien-ab"><div>${q.a}</div><div class="fleche">↓ ENTRAÎNE</div><div>${q.b}</div></div>
+    <div class="question">Pourquoi ? Choisis l'explication qui relie correctement les deux faits.</div>
+    ${opts.map((o,k)=>`<button class="option" data-k="${k}">${o.t}</button>`).join("")}
+    <div id="retro"></div>`;
+  corps.querySelectorAll(".option").forEach(b=>b.onclick=()=>{
+    const o=opts[+b.dataset.k]; if(o.ok) etat.score++;
+    corps.querySelectorAll(".option").forEach((x,k)=>{x.disabled=true; if(opts[k].ok) x.classList.add("bonne"); else if(x===b) x.classList.add("mauvaise");});
+    $("retro").innerHTML = `<div class="retro ${o.ok?'bien':'mal'}">${o.ok?'<b>Exact.</b>':'<b>Non. La bonne explication :</b><br>'+q.bonne}
+      <br><small>À l'épreuve, c'est cette phrase qu'on te demande d'écrire entre les deux faits. Revois ${typeof q.page==='string'?'les pages':'la page'} ${q.page} de ton cahier.</small></div>
+      <button class="suivant">Suivant ›</button>`;
+    etoiles(); $("retro").querySelector(".suivant").onclick=()=>{etat.i++;question();};
+  });
+}
+
+function binaire(q,choix){
+  const corps=$("act-corps");
+  const haut = q.enonce
+    ? `<div class="lien-ab"><div><b>${q.enonce}</b></div></div><div class="question">Vrai ou faux ?</div>`
+    : q.sujet
+    ? `<div class="lien-ab"><small style="color:var(--doux)">Sujet</small><div><b>${q.sujet}</b></div></div>
+       <div class="zone" style="margin-bottom:12px"><div class="lien-ab" style="margin:0">${q.a}</div><div class="lien-ab" style="margin:0">${q.b}</div></div>
+       <div class="question">Leurs positions sont-elles pareilles ou différentes ?</div>`
+    : q.centre
+    ? `<div class="lien-ab"><small style="color:var(--doux)">Fait central</small><div><b>${q.centre}</b></div></div>
+       <div class="lien-ab"><small style="color:var(--doux)">Ce fait-ci</small><div>${q.fait}</div></div>
+       <div class="question">Par rapport au fait central, est-ce une cause ou une conséquence ?</div>`
+    : `<div class="lien-ab"><small style="color:var(--doux)">Avant</small><div>${q.avant}</div>
+       <div class="fleche">↓</div><small style="color:var(--doux)">Après</small><div>${q.apres}</div></div>
+       <div class="question">Est-ce un changement ou une continuité ?</div>`;
+  corps.innerHTML = haut + `<div class="zone">${choix.map(c=>`<button class="option" data-c="${c}" style="text-align:center;font-weight:700">${c[0].toUpperCase()+c.slice(1)}</button>`).join("")}</div><div id="retro"></div>`;
+  corps.querySelectorAll(".option").forEach(b=>b.onclick=()=>{
+    const ok = b.dataset.c===q.bonne; if(ok) etat.score++;
+    corps.querySelectorAll(".option").forEach(x=>{x.disabled=true; if(x.dataset.c===q.bonne) x.classList.add("bonne"); else if(x===b) x.classList.add("mauvaise");});
+    $("retro").innerHTML = `<div class="retro ${ok?'bien':'mal'}"><b>${ok?'Exact.':'Non : '+q.bonne+'.'}</b><br>${q.expl}
+      <br><small>Revois ${typeof q.page==='string'?'les pages':'la page'} ${q.page} de ton cahier.</small></div><button class="suivant">Suivant ›</button>`;
+    etoiles(); $("retro").querySelector(".suivant").onclick=()=>{etat.i++;question();};
+  });
+}
+
+function carte(q){
+  const corps=$("act-corps");
+  corps.innerHTML = `<div class="question" style="margin-top:0">${q.q}</div>
+    <div class="carte"><img src="${CARTE_IMG}" alt="Carte du Canada en 1905, avec des lettres sur les provinces et territoires">
+      ${Object.entries(LETTRES).map(([l,[x,y]])=>`<span class="lettre" style="left:${x}%;top:${y}%">${l}</span>`).join("")}</div>
+    <div class="credit">Carte : Ressources naturelles Canada, Évolution territoriale, 1905 (modifiée). Contient des informations visées par la Licence du gouvernement ouvert – Canada.</div>
+    <div class="lettres">${Object.keys(LETTRES).map(l=>`<button class="option" data-c="${l}">${l}</button>`).join("")}</div>
+    <div id="retro"></div>`;
+  corps.querySelectorAll(".option").forEach(b=>b.onclick=()=>{
+    const ok=b.dataset.c===q.bonne; if(ok) etat.score++;
+    corps.querySelectorAll(".option").forEach(x=>{x.disabled=true; if(x.dataset.c===q.bonne) x.classList.add("bonne"); else if(x===b) x.classList.add("mauvaise");});
+    $("retro").innerHTML=`<div class="retro ${ok?'bien':'mal'}"><b>${ok?'Exact.':'Non, c\'est la lettre '+q.bonne+'.'}</b><br>${q.expl}
+      <br><small>Revois ${typeof q.page==='string'?'les pages':'la page'} ${q.page} de ton cahier.</small></div><button class="suivant">Suivant ›</button>`;
+    etoiles(); $("retro").querySelector(".suivant").onclick=()=>{etat.i++;question();};
+  });
+}
+
+function temps(q){
+  const corps=$("act-corps"); let place=[]; const n=q.items.length;
+  const cartes = melanger(q.items.map((it,k)=>({t:it[0],k})));
+  corps.innerHTML = `<h3 style="margin:0 0 4px">Mets en ordre chronologique</h3>
+    <p class="consigne">Touche d'abord l'événement le plus ancien.</p>
+    <div class="zone"><div class="cases">
+      ${q.items.map((_,k)=>`${k?'<div class="alors">↓ PUIS</div>':''}<div class="case" id="c${k}">${k+1}. ${k?'…':'Le plus ancien'}</div>`).join("")}
+    </div><div class="choix">${cartes.map(c=>`<button class="carte-fait" data-k="${c.k}">${c.t}</button>`).join("")}</div></div>
+    <div id="retro"></div>`;
+  corps.querySelectorAll(".carte-fait").forEach(b=>b.onclick=()=>{
+    b.disabled=true; const k=+b.dataset.k, pos=place.length; place.push(k);
+    const c=$("c"+pos); c.textContent=(pos+1)+". "+q.items[k][0]; c.classList.add("pleine");
+    if(place.length===n){
+      const ok=place.every((v,i)=>v===i); if(ok) etat.score++;
+      $("retro").innerHTML=`<div class="retro ${ok?'bien':'mal'}"><b>${ok?'Bravo, c\'est le bon ordre.':'Pas tout à fait. Le bon ordre :'}</b><br>
+        ${q.items.map((it,i)=>`${i+1}. ${it[0]} (${it[1]})`).join("<br>")}
+        <br><small>Revois les pages ${q.page} de ton cahier.</small></div><button class="suivant">Suivant ›</button>`;
+      etoiles(); $("retro").querySelector(".suivant").onclick=()=>{etat.i++;question();};
+    }
+  });
+}
+
+function paires(q){
+  const corps=$("act-corps");
+  const autres = melanger(PAIRES.map(p=>p.bonne).filter(x=>x!==q.bonne)).slice(0,3);
+  const opts = melanger([q.bonne,...autres]);
+  corps.innerHTML = `<div class="lien-ab"><small style="color:var(--doux)">Description</small><div><b>${q.desc}</b></div></div>
+    <div class="question">À qui ou à quoi cette description correspond-elle ?</div>
+    ${opts.map(o=>`<button class="option" data-c="${o}">${o}</button>`).join("")}<div id="retro"></div>`;
+  corps.querySelectorAll(".option").forEach(b=>b.onclick=()=>{
+    const ok=b.dataset.c===q.bonne; if(ok) etat.score++;
+    corps.querySelectorAll(".option").forEach(x=>{x.disabled=true; if(x.dataset.c===q.bonne) x.classList.add("bonne"); else if(x===b) x.classList.add("mauvaise");});
+    $("retro").innerHTML=`<div class="retro ${ok?'bien':'mal'}"><b>${ok?'Exact.':'Non : '+q.bonne+'.'}</b>
+      <br><small>Revois ${typeof q.page==='string'?'les pages':'la page'} ${q.page} de ton cahier.</small></div><button class="suivant">Suivant ›</button>`;
+    etoiles(); $("retro").querySelector(".suivant").onclick=()=>{etat.i++;question();};
+  });
+}
+
+function fin(){
+  $("act-corps").innerHTML = `<div class="fin"><div class="score">${etat.score} / 5</div>
+    <p>${etat.score===5?'Parfait.':etat.score>=3?'Bien. Revois les pages indiquées pour tes erreurs.':'Retourne à ton cahier, puis recommence.'}</p>
+    <button class="suivant" id="refaire">Recommencer</button> <button class="retour" id="fin-retour">Retour</button></div>`;
+  $("refaire").onclick=()=>ouvrir(etat.type); $("fin-retour").onclick=fermer;
+}
+
+document.querySelectorAll("[data-act]").forEach(b=>b.onclick=()=>ouvrir(b.dataset.act));
+$("retour").onclick=fermer;
+</script>
+</body>
+</html>
