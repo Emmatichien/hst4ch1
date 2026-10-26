@@ -2,7 +2,7 @@
 
 ## Finalité
 Réussite à l'épreuve ministérielle d'histoire, 4e secondaire.
-Ce repo est la source unique du matériel ; les autres formats en dérivent.
+Ce repo est la source unique du matériel du chapitre 2 ; les autres formats en dérivent.
 
 ## Contenu
 - Tout fait historique est traçable à une référence listée ci-dessous.

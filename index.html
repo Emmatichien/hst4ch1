@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapitre 2 · HQC 4</title>
+<style>
+  :root{
+    --fond:#fbf3ea; --carte:#fffaf4; --encre:#2b2420; --doux:#7a6a5c;
+    --bord:#e8d9c6; --accent:#234E84; --accent-clair:#e3ebf5;
+    --vert:#2e7d4f; --vert-clair:#e3f2e8; --rouge:#b23a3a; --rouge-clair:#f8e4e4;
+    --or:#b07a2a;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--fond);color:var(--encre);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.45}
+  .page{max-width:960px;margin:0 auto;padding:16px}
+  header.haut{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+  .logo{width:36px;height:36px;border-radius:10px;background:var(--accent);color:#fff;
+    display:grid;place-items:center;font-weight:800}
+  .haut small{display:block;color:var(--doux);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase}
+  .haut strong{font-size:1.05rem}
+  .hero{background:linear-gradient(135deg,#1b3d68,#234E84 55%,#3d6aa3);color:#fff;
+    border-radius:18px;padding:28px 24px}
+  .hero .sur{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;opacity:.85}
+  .hero h1{margin:.3em 0 .4em;font-size:clamp(1.4rem,4vw,2rem);line-height:1.15}
+  .hero p{margin:0;max-width:34em;opacity:.95}
+  .puces{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 26px}
+  .puce{background:var(--carte);border:1px solid var(--bord);border-radius:999px;padding:5px 12px;font-size:.82rem}
+  .bloc{margin:28px 0}
+  .bloc-titre{display:flex;align-items:baseline;gap:10px;margin-bottom:12px}
+  .bloc-titre .num{width:30px;height:30px;border-radius:50%;background:var(--accent);color:#fff;
+    display:grid;place-items:center;font-weight:800;flex:none}
+  .bloc-titre h2{margin:0;font-size:1.25rem;letter-spacing:.04em}
+  .bloc-titre span{color:var(--doux);font-size:.9rem}
+  .grille{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+  .oi{background:var(--carte);border:1px solid var(--bord);border-radius:14px;padding:14px}
+  .oi h3{margin:0;font-size:1rem}
+  .oi .desc{color:var(--doux);font-size:.85rem;margin:2px 0 10px}
+  .acts{display:flex;flex-wrap:wrap;gap:8px}
+  .act{font:inherit;text-align:left;background:#fff;border:1px solid var(--bord);border-radius:10px;
+    padding:10px 12px;min-width:120px;cursor:pointer}
+  .act:hover:not(:disabled){border-color:var(--accent)}
+  .act b{display:block;font-size:.92rem}
+  .act i{font-style:normal;font-size:.75rem;color:var(--or)}
+  .act:disabled{cursor:default;opacity:.55}
+  .act.examen{border-color:var(--accent);background:var(--accent-clair)}
+  .badge{display:inline-block;font-size:.68rem;background:var(--accent);color:#fff;border-radius:6px;padding:1px 6px;margin-left:4px}
+  footer{color:var(--doux);font-size:.8rem;text-align:center;margin:40px 0 16px}
+
+  /* Activités */
+  #activite{display:none}
+  .act-haut{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+  .retour{font:inherit;background:var(--carte);border:1px solid var(--bord);border-radius:999px;padding:6px 14px;cursor:pointer}
+  .act-haut h2{margin:0;font-size:1.15rem}
+  .act-haut small{display:block;color:var(--accent);font-size:.78rem}
+  .etoiles{text-align:center;font-size:1.4rem;letter-spacing:6px;color:var(--bord);margin:6px 0 14px}
+  .etoiles .ok{color:var(--or)}
+  .consigne{color:var(--doux);margin:0 0 14px}
+  .zone{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media (max-width:640px){.zone{grid-template-columns:1fr}}
+  .cases{background:#f3e8db;border-radius:14px;padding:12px}
+  .case{border:2px dashed var(--bord);border-radius:10px;padding:10px;min-height:48px;background:var(--fond)}
+  .case.pleine{border-style:solid;border-color:var(--accent);background:#fff}
+  .alors{font-size:.72rem;color:var(--or);font-weight:700;margin:4px 8px}
+  .choix{display:flex;flex-direction:column;gap:10px}
+  .carte-fait{font:inherit;text-align:left;background:#fff;border:1px solid var(--bord);
+    border-bottom:3px solid #c9a978;border-radius:12px;padding:12px;cursor:pointer}
+  .carte-fait:disabled{opacity:.35;cursor:default}
+  .lien-ab{background:var(--carte);border:1px solid var(--bord);border-radius:14px;padding:14px;margin-bottom:12px}
+  .lien-ab .fleche{color:var(--or);font-weight:700;margin:6px 0}
+  .question{font-weight:700;margin:12px 0}
+  .option{font:inherit;text-align:left;width:100%;background:#fff;border:1px solid var(--bord);
+    border-radius:12px;padding:12px;margin-bottom:8px;cursor:pointer}
+  .option.bonne{background:var(--vert-clair);border-color:var(--vert)}
+  .option.mauvaise{background:var(--rouge-clair);border-color:var(--rouge)}
+  .retro{border-radius:12px;padding:12px;margin-top:12px}
+  .retro.bien{background:var(--vert-clair)}
+  .retro.mal{background:var(--rouge-clair)}
+  .suivant{font:inherit;margin-top:12px;background:var(--accent);color:#fff;border:0;border-radius:10px;padding:10px 18px;cursor:pointer}
+  .fin{text-align:center;padding:30px 10px}
+  .fin .score{font-size:2rem;font-weight:800;color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="haut">
+    <div class="logo">4</div>
+    <div><small>HQC · 4e secondaire</small><strong>Chapitre 2</strong></div>
+  </header>
+
+  <!-- ACCUEIL -->
+  <main id="accueil">
+    <section class="hero">
+      <div class="sur">Chapitre 2 · 1896 à 1945</div>
+      <h1>Les nationalismes et l'autonomie du Canada</h1>
+      <p>Choisis une opération intellectuelle et teste-toi. Une erreur ? Tu as la bonne réponse et la page de ton cahier.</p>
+    </section>
+    <div class="puces">
+      <span class="puce">📒 Tu étudies dans ton cahier</span>
+      <span class="puce">🎯 Tu te testes ici</span>
+      <span class="puce">⏱️ 2 minutes par activité</span>
+    </div>
+
+    <section class="bloc">
+      <div class="bloc-titre"><div class="num">1</div><h2>REPÉRER</h2><span>Le bon fait, au bon moment, au bon endroit</span></div>
+      <div class="grille">
+        <div class="oi"><h3>Établir des faits</h3><div class="desc">Un nom, un lieu, un fait précis</div>
+          <div class="acts"><button class="act" disabled><b>Bientôt</b></button></div></div>
+        <div class="oi"><h3>Situer dans le temps</h3><div class="desc">L'ordre chronologique</div>
+          <div class="acts"><button class="act" disabled><b>Bientôt</b></button></div></div>
+        <div class="oi"><h3>Situer dans l'espace</h3><div class="desc">La bonne lettre sur la carte</div>
+          <div class="acts"><button class="act" disabled><b>Bientôt</b></button></div></div>
+      </div>
+    </section>
+
+    <section class="bloc">
+      <div class="bloc-titre"><div class="num">2</div><h2>RELIER</h2><span>Associer, comparer, voir ce qui change</span></div>
+      <div class="grille">
+        <div class="oi"><h3>Mettre en relation des faits</h3><div class="desc">Chaque élément au bon endroit</div>
+          <div class="acts"><button class="act" disabled><b>Bientôt</b></button></div></div>
+        <div class="oi"><h3>Différences et similitudes</h3><div class="desc">Pareil ou différent ?</div>
+          <div class="acts"><button class="act" disabled><b>Bientôt</b></button></div></div>
+        <div class="oi"><h3>Changements et continuités</h3><div class="desc">Ce qui change, ce qui reste</div>
+          <div class="acts"><button class="act" disabled><b>Bientôt</b></button></div></div>
+      </div>
+    </section>
+
+    <section class="bloc">
+      <div class="bloc-titre"><div class="num">3</div><h2>EXPLIQUER</h2><span>Pourquoi c'est arrivé, et ce que ça a entraîné</span></div>
+      <div class="grille">
+        <div class="oi"><h3>Causes et conséquences</h3><div class="desc">Parce que… ou alors… ?</div>
+          <div class="acts"><button class="act" disabled><b>Bientôt</b></button></div></div>
+        <div class="oi"><h3>Liens de causalité</h3><div class="desc">Trois faits, deux liens</div>
+          <div class="acts">
+            <button class="act" data-act="chaine"><b>La chaîne</b><i>★ 5 questions</i></button>
+            <button class="act examen" data-act="lien"><b>Le bon lien <span class="badge">Épreuve</span></b><i>★ 5 questions</i></button>
+          </div></div>
+      </div>
+    </section>
+
+    <footer>Histoire du Québec et du Canada · 4e secondaire<br>Aucun compte, aucun cookie, aucune statistique.</footer>
+  </main>
+
+  <!-- ACTIVITÉ -->
+  <section id="activite">
+    <div class="act-haut">
+      <button class="retour" id="retour">‹ Retour</button>
+      <div><h2 id="act-titre"></h2><small id="act-oi">Liens de causalité</small></div>
+    </div>
+    <div class="etoiles" id="etoiles"></div>
+    <div id="act-corps"></div>
+  </section>
+</div>
+
+<script>
+/* Contenu : chaque fait est tiré du cahier (TC Média, chapitre 2). La page est indiquée pour la révision. */
+const CHAINES = [
+  { page: 154, sujet: "La crise de la conscription",
+    faits: [
+      "Les pertes en Europe sont lourdes et les volontaires ne suffisent plus à renouveler les troupes",
+      "Le gouvernement fédéral adopte la Loi du service militaire (1917)",
+      "De nombreuses manifestations contre la conscription ont lieu au Québec (1917-1918)"
+    ]},
+  { page: 156, sujet: "Vers l'autonomie du Canada",
+    faits: [
+      "Le Canada apporte une contribution exceptionnelle à la Première Guerre mondiale",
+      "Le rapport Balfour (1926) propose de reconnaître formellement l'autonomie des dominions",
+      "Le Statut de Westminster (1931) accorde au Canada une plus grande autonomie"
+    ]},
+  { page: 137, sujet: "Le mouvement syndical",
+    faits: [
+      "Les conditions de travail des ouvriers restent très difficiles au début du 20e siècle",
+      "Les syndicats exigent que les gouvernements adoptent des lois en faveur des ouvriers",
+      "La Loi des accidents de travail (1909) prévoit l'indemnisation des ouvriers blessés"
+    ]},
+  { page: 164, sujet: "La crise et la vie politique",
+    faits: [
+      "La Grande Dépression frappe durement la société québécoise",
+      "Une partie de la population perd confiance envers les partis traditionnels",
+      "L'Union nationale de Maurice Duplessis remporte les élections de 1936"
+    ]},
+  { page: 172, sujet: "L'économie de guerre",
+    faits: [
+      "En 1939, le gouvernement fédéral applique la Loi sur les mesures de guerre",
+      "Le gouvernement planifie l'économie pour assurer la production de guerre",
+      "La production industrielle et les exportations du Canada sont en hausse"
+    ]}
+];
+
+/* « Le bon lien » : justifier UN lien de chaque chaîne. */
+const LIENS = [
+  { page: 154, a: "La Loi du service militaire (1917)", b: "Des manifestations au Québec",
+    bonne: "Une bonne partie de la population francophone s'oppose à l'obligation de s'engager dans l'armée",
+    autres: [
+      "La loi oblige toutes les femmes du Québec à remplacer les hommes partis au front dans les usines de munitions",
+      "La loi interdit aux Canadiens français de servir dans leurs propres bataillons et les disperse dans l'armée"
+    ]},
+  { page: 156, a: "La contribution du Canada à la guerre", b: "Le rapport Balfour (1926)",
+    bonne: "Son rôle actif dans la guerre permet au Canada de revendiquer une plus grande autonomie face au Royaume-Uni",
+    autres: [
+      "Ruiné par la guerre, le Royaume-Uni décide seul d'abandonner le contrôle de ses colonies et de ses dominions",
+      "Le Canada menace de quitter l'Empire et de se joindre aux États-Unis si son autonomie n'est pas reconnue"
+    ]},
+  { page: 137, a: "Les revendications des syndicats", b: "La Loi des accidents de travail (1909)",
+    bonne: "Sous la pression des syndicats, les gouvernements adoptent progressivement des lois qui réglementent le travail",
+    autres: [
+      "Les grands employeurs réclament eux-mêmes cette loi afin d'attirer davantage d'immigrants dans leurs usines",
+      "Les syndicats obtiennent des sièges à l'Assemblée législative et votent eux-mêmes les lois sur le travail"
+    ]},
+  { page: 164, a: "La Grande Dépression", b: "La perte de confiance envers les partis traditionnels",
+    bonne: "Les conséquences de la crise provoquent de profondes remises en question chez une partie de la population",
+    autres: [
+      "Les partis traditionnels sont reconnus coupables d'avoir provoqué le krach boursier de New York en 1929",
+      "Le gouvernement retire le droit de vote aux chômeurs, qui se tournent alors vers de nouveaux partis politiques"
+    ]},
+  { page: 172, a: "La planification de l'économie de guerre", b: "La hausse de la production et des exportations",
+    bonne: "L'économie fonctionne à plein rendement pour fournir chars, navires, avions et munitions aux Alliés",
+    autres: [
+      "Le rationnement pousse les familles canadiennes à acheter davantage, ce qui fait grimper la production",
+      "Les usines cessent de produire pour les Alliés afin de mieux répondre aux besoins du marché canadien"
+    ]}
+];
+
+const melanger = t => { const c=[...t]; for(let i=c.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[c[i],c[j]]=[c[j],c[i]];} return c; };
+const $ = id => document.getElementById(id);
+let etat = null;
+
+function ouvrir(type){
+  $("accueil").style.display="none"; $("activite").style.display="block";
+  $("act-titre").textContent = type==="chaine" ? "La chaîne" : "Le bon lien";
+  etat = { type, i:0, score:0, ordre: melanger([...Array(5).keys()]) };
+  question();
+}
+function fermer(){ $("activite").style.display="none"; $("accueil").style.display="block"; window.scrollTo(0,0); }
+function etoiles(){
+  $("etoiles").innerHTML = [0,1,2,3,4].map(k=>`<span class="${k<etat.score?'ok':''}">★</span>`).join("");
+}
+function question(){
+  etoiles();
+  if(etat.i>=5) return fin();
+  const n = etat.ordre[etat.i];
+  etat.type==="chaine" ? chaine(CHAINES[n]) : lien(LIENS[n]);
+}
+
+function chaine(q){
+  const corps=$("act-corps"); let place=[];
+  const cartes = melanger(q.faits.map((f,k)=>({f,k})));
+  corps.innerHTML = `<h3 style="margin:0 0 4px">Remets la chaîne dans l'ordre</h3>
+    <p class="consigne">${q.sujet} — touche le fait de départ, puis ce qu'il entraîne.</p>
+    <div class="zone"><div class="cases">
+      ${[0,1,2].map(k=>`${k?'<div class="alors">↓ ALORS</div>':''}<div class="case" id="c${k}">${k+1}. ${k?'…':'Le fait de départ'}</div>`).join("")}
+    </div><div class="choix">${cartes.map(c=>`<button class="carte-fait" data-k="${c.k}">${c.f}</button>`).join("")}</div></div>
+    <div id="retro"></div>`;
+  corps.querySelectorAll(".carte-fait").forEach(b=>b.onclick=()=>{
+    b.disabled=true; const k=+b.dataset.k, pos=place.length; place.push(k);
+    const c=$("c"+pos); c.textContent=(pos+1)+". "+q.faits[k]; c.classList.add("pleine");
+    if(place.length===3){
+      const ok = place.every((v,i)=>v===i); if(ok) etat.score++;
+      $("retro").innerHTML = `<div class="retro ${ok?'bien':'mal'}">${ok?'<b>Bravo, la chaîne tient.</b>':
+        '<b>Pas tout à fait. Le bon ordre :</b><br>'+q.faits.map((f,i)=>(i+1)+". "+f).join("<br>")}
+        <br><small>Revois la page ${q.page} de ton cahier.</small></div>
+        <button class="suivant">Suivant ›</button>`;
+      etoiles(); $("retro").querySelector(".suivant").onclick=()=>{etat.i++;question();};
+    }
+  });
+}
+
+function lien(q){
+  const corps=$("act-corps");
+  const opts = melanger([{t:q.bonne,ok:true},...q.autres.map(t=>({t,ok:false}))]);
+  corps.innerHTML = `<div class="lien-ab"><div>${q.a}</div><div class="fleche">↓ ENTRAÎNE</div><div>${q.b}</div></div>
+    <div class="question">Pourquoi ? Choisis l'explication qui relie correctement les deux faits.</div>
+    ${opts.map((o,k)=>`<button class="option" data-k="${k}">${o.t}</button>`).join("")}
+    <div id="retro"></div>`;
+  corps.querySelectorAll(".option").forEach(b=>b.onclick=()=>{
+    const o=opts[+b.dataset.k]; if(o.ok) etat.score++;
+    corps.querySelectorAll(".option").forEach((x,k)=>{x.disabled=true; if(opts[k].ok) x.classList.add("bonne"); else if(x===b) x.classList.add("mauvaise");});
+    $("retro").innerHTML = `<div class="retro ${o.ok?'bien':'mal'}">${o.ok?'<b>Exact.</b>':'<b>Non. La bonne explication :</b><br>'+q.bonne}
+      <br><small>À l'épreuve, c'est cette phrase qu'on te demande d'écrire entre les deux faits. Revois la page ${q.page} de ton cahier.</small></div>
+      <button class="suivant">Suivant ›</button>`;
+    etoiles(); $("retro").querySelector(".suivant").onclick=()=>{etat.i++;question();};
+  });
+}
+
+function fin(){
+  $("act-corps").innerHTML = `<div class="fin"><div class="score">${etat.score} / 5</div>
+    <p>${etat.score===5?'Parfait.':etat.score>=3?'Bien. Revois les pages indiquées pour tes erreurs.':'Retourne à ton cahier, puis recommence.'}</p>
+    <button class="suivant" id="refaire">Recommencer</button> <button class="retour" id="fin-retour">Retour</button></div>`;
+  $("refaire").onclick=()=>ouvrir(etat.type); $("fin-retour").onclick=fermer;
+}
+
+document.querySelectorAll("[data-act]").forEach(b=>b.onclick=()=>ouvrir(b.dataset.act));
+$("retour").onclick=fermer;
+</script>
+</body>
+</html>
