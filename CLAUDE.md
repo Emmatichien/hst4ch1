@@ -2,7 +2,7 @@
 
 ## Finalité
 Réussite à l'épreuve ministérielle d'histoire, 4e secondaire.
-Ce repo est la source unique du matériel du chapitre 1 (dossiers 1 à 3 pour l'instant) ; les autres formats en dérivent.
+Ce repo est la source unique du matériel du chapitre 1 (dossiers 1 à 5) ; les autres formats en dérivent.
 
 ## Contenu
 - Tout fait historique est traçable à une référence listée ci-dessous.
@@ -36,5 +36,5 @@ Références du chapitre 1 : cahier p. 28 à 111 ; évaluation Fiche 1.2 (EV-21 
 - Modèle de structure : le site de Simon (3e secondaire). Reprendre l'ossature, pas la logique de contenu.
 - Réutiliser le gabarit du cahier du ch. 1 ; aucun élément improvisé.
 - Ne pas retenter la navigation par onglets ou diaporama pour les cartes.
-- Ne couvrir que la matière déjà vue en classe (dossiers 1 à 3 pour l'instant).
+- Chaque question porte son numéro de dossier (d) ; un filtre permet aux élèves de se limiter à la matière vue.
 - Variables CSS `--orange` conservées dans tous les chapitres (choix voulu).

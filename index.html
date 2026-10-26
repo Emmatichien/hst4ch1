@@ -54,6 +54,9 @@
   .credit{font-size:.7rem;color:var(--doux);margin:4px 0 12px}
   .lettres{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
   .lettres .option{text-align:center;font-weight:800;margin:0}
+  .filtre{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:-12px 0 22px;font-size:.88rem;color:var(--doux)}
+  .chip{font:inherit;font-size:.85rem;background:var(--carte);border:1px solid var(--bord);border-radius:999px;padding:5px 12px;cursor:pointer;color:var(--encre)}
+  .chip.actif{background:var(--accent);border-color:var(--accent);color:#fff}
   footer{color:var(--doux);font-size:.8rem;text-align:center;margin:40px 0 16px}
 
   /* Activités */
@@ -101,7 +104,7 @@
   <!-- ACCUEIL -->
   <main id="accueil">
     <section class="hero">
-      <div class="sur">Chapitre 1 · 1840 à 1896 · Dossiers 1 à 3</div>
+      <div class="sur">Chapitre 1 · 1840 à 1896</div>
       <h1>La formation du régime fédéral canadien</h1>
       <p>Choisis une opération intellectuelle et teste-toi. Une erreur ? Tu as la bonne réponse et la page de ton cahier.</p>
     </section>
@@ -109,6 +112,12 @@
       <span class="puce">📒 Tu étudies dans ton cahier</span>
       <span class="puce">🎯 Tu te testes ici</span>
       <span class="puce">⏱️ 2 minutes par activité</span>
+    </div>
+    <div class="filtre" role="group" aria-label="Matière à réviser">
+      <span>Matière :</span>
+      <button class="chip" data-f="1-3">Dossiers 1 à 3</button>
+      <button class="chip" data-f="4-5">Dossiers 4 et 5</button>
+      <button class="chip" data-f="tout">Tout le chapitre</button>
     </div>
 
     <section class="bloc">
@@ -163,156 +172,277 @@
 </div>
 
 <script>
-/* Contenu : chaque fait est tiré du cahier (TC Média, chapitre 1, dossiers 1 à 3). La page est indiquée pour la révision. */
+/* Contenu : chaque fait est tiré du cahier (TC Média, chapitre 1, dossiers 1 à 5). d = numéro du dossier. La page est indiquée pour la révision. */
 const CHAINES = [
-  { page: 32, sujet: "L'Acte d'Union",
+  { d: 1, page: 32, sujet: "L'Acte d'Union",
     faits: [
       "Lord Durham recommande d'unir le Haut-Canada et le Bas-Canada",
       "Londres adopte l'Acte d'Union, qui crée la Province du Canada",
       "Les députés canadiens-français deviennent minoritaires à la Chambre d'assemblée"
     ]},
-  { page: 36, sujet: "Vers le gouvernement responsable",
+  { d: 1, page: 36, sujet: "Vers le gouvernement responsable",
     faits: [
       "Londres abandonne sa politique protectionniste",
       "Londres incite ses colonies à devenir plus autonomes",
       "La Province du Canada obtient la responsabilité ministérielle"
     ]},
-  { page: 47, sujet: "La guerre de Sécession et la défense des colonies",
+  { d: 2, page: 47, sujet: "La guerre de Sécession et la défense des colonies",
     faits: [
       "Le Royaume-Uni soutient les États du Sud de plusieurs manières pendant la guerre de Sécession",
       "Les États du Nord menacent la Province du Canada d'annexion",
       "Les colonies britanniques envisagent de s'unir pour assurer ensemble leur protection"
     ]},
-  { page: 50, sujet: "La Grande Coalition",
+  { d: 2, page: 50, sujet: "La Grande Coalition",
     faits: [
       "L'instabilité ministérielle rend la gestion de la colonie difficile",
       "George Brown propose une alliance aux chefs conservateurs : la Grande Coalition",
       "La coalition lance l'idée d'une confédération des colonies britanniques"
     ]},
-  { page: "62 et 63", sujet: "Les transports et l'industrie",
+  { d: 3, page: "62 et 63", sujet: "Les transports et l'industrie",
     faits: [
       "Les échanges commerciaux augmentent en Amérique du Nord",
       "Les gouvernements et les entrepreneurs investissent dans les canaux et les chemins de fer",
       "L'industrie forestière et l'industrie métallurgique se développent"
+    ]},
+  { d: 4, page: "72 et 73", sujet: "L'émigration et la colonisation",
+    faits: [
+      "Les terres agricoles de la vallée du Saint-Laurent sont surpeuplées",
+      "De nombreux Canadiens français émigrent vers les États-Unis",
+      "Le gouvernement du Québec et le clergé lancent des programmes de colonisation"
+    ]},
+  { d: 4, page: 76, sujet: "L'Église et le pouvoir politique",
+    faits: [
+      "Le clergé adhère à l'ultramontanisme : l'Église doit être présente partout dans la société",
+      "L'Église s'allie aux conservateurs au pouvoir et incite la population à voter pour eux",
+      "L'Église obtient des lois qui lui permettent de contrôler l'éducation, les hôpitaux et les orphelinats"
+    ]},
+  { d: 4, page: 78, sujet: "L'Institut canadien de Montréal",
+    faits: [
+      "Les membres de l'Institut canadien prônent la tolérance et la liberté de pensée",
+      "Mgr Bourget, puis le pape, condamnent l'Institut canadien",
+      "L'Institut canadien ferme ses portes"
+    ]},
+  { d: 5, page: "90 et 91", sujet: "Les Métis et la création du Manitoba",
+    faits: [
+      "Le gouvernement canadien entreprend de coloniser les terres où vivent les Métis",
+      "Les Métis forment un comité, puis un gouvernement provisoire dirigé par Louis Riel",
+      "Le gouvernement canadien conclut un accord avec les Métis : le Manitoba est créé"
+    ]},
+  { d: 5, page: 92, sujet: "Les traités numérotés",
+    faits: [
+      "Les bisons ont presque disparu et les colons réduisent les territoires de chasse",
+      "La famine menace les Premières Nations de l'Ouest",
+      "Les Premières Nations acceptent de signer des traités et de s'établir dans des réserves"
     ]}
 ];
 
 /* « Le bon lien » : justifier UN lien de chaque chaîne. */
 const LIENS = [
-  { page: 32, a: "L'Acte d'Union", b: "Les députés canadiens-français deviennent minoritaires",
+  { d: 1, page: 32, a: "L'Acte d'Union", b: "Les députés canadiens-français deviennent minoritaires",
     bonne: "Chaque région obtient 42 députés, même si le Bas-Canada est plus peuplé : les Canadiens français ne sont plus majoritaires",
     autres: [
       "L'Acte d'Union retire le droit de vote aux francophones du Bas-Canada jusqu'à l'obtention du gouvernement responsable",
       "L'Acte d'Union réserve la majorité des sièges de la Chambre aux colons britanniques arrivés dans la colonie après 1840"
     ]},
-  { page: 36, a: "L'abandon du protectionnisme britannique", b: "Les colonies deviennent plus autonomes",
+  { d: 1, page: 36, a: "L'abandon du protectionnisme britannique", b: "Les colonies deviennent plus autonomes",
     bonne: "En cessant de privilégier ses colonies sur le plan économique, Londres les pousse à être plus autonomes, ce qui ouvre la voie à l'autonomie politique",
     autres: [
       "Ruinée par la fin du protectionnisme, Londres n'a plus les moyens de payer les gouverneurs, les soldats et les fonctionnaires de ses colonies d'Amérique",
       "Les colonies menacent de se joindre aux États-Unis si Londres refuse de rétablir les tarifs préférentiels qui avantageaient leurs produits agricoles"
     ]},
-  { page: 47, a: "La menace d'annexion par les États du Nord", b: "Les colonies envisagent de s'unir",
+  { d: 2, page: 47, a: "La menace d'annexion par les États du Nord", b: "Les colonies envisagent de s'unir",
     bonne: "Incapable de se défendre seule, la Province du Canada dépend du Royaume-Uni, qui trouve de plus en plus coûteux d'envoyer des troupes pour la protéger",
     autres: [
       "Les États du Nord exigent que les colonies britanniques s'unissent avant d'accepter de renouveler le traité de réciprocité signé avec elles en 1854",
       "Le Royaume-Uni interdit à ses colonies de lever leurs propres troupes, ce qui les oblige à fusionner leurs gouvernements pour obtenir une armée"
     ]},
-  { page: 50, a: "La formation de la Grande Coalition", b: "Le projet de confédération",
+  { d: 2, page: 50, a: "La formation de la Grande Coalition", b: "Le projet de confédération",
     bonne: "Formée pour mettre fin à l'instabilité ministérielle, la coalition propose d'unir les colonies pour créer un ensemble économique et mieux se défendre",
     autres: [
       "Ayant enfin obtenu la double majorité, la coalition décide seule d'unir toutes les colonies sans consulter leurs gouvernements ni celui de Londres",
       "La coalition réunit les réformistes et les conservateurs dans le but de convaincre Londres de rétablir son ancienne politique protectionniste"
     ]},
-  { page: 63, a: "La construction des canaux et des chemins de fer", b: "Le développement des industries forestière et métallurgique",
+  { d: 3, page: 63, a: "La construction des canaux et des chemins de fer", b: "Le développement des industries forestière et métallurgique",
     bonne: "Pour construire les canaux et fabriquer les rails et les locomotives, il faut de grandes quantités de bois et de métaux",
     autres: [
       "Les canaux remplacent les forêts le long du fleuve, ce qui oblige les entrepreneurs à se tourner vers les mines",
       "Les gouvernements interdisent l'importation de bois et de métaux afin de protéger les nouvelles compagnies ferroviaires"
+    ]},
+  { d: 4, page: 73, a: "L'émigration des Canadiens français vers les États-Unis", b: "Les programmes de colonisation au Québec",
+    bonne: "Le gouvernement et le clergé craignent que la population francophone et catholique devienne de plus en plus minoritaire au Canada",
+    autres: [
+      "Les États-Unis ferment leurs frontières aux Canadiens français, qui doivent donc trouver de nouvelles terres agricoles au Québec",
+      "Le gouvernement fédéral oblige le Québec à peupler ses régions éloignées avant de lui envoyer des immigrants européens"
+    ]},
+  { d: 4, page: 76, a: "L'ultramontanisme", b: "L'alliance de l'Église avec les conservateurs",
+    bonne: "Pour les ultramontains, l'Église doit être présente dans toutes les sphères de la société, y compris la politique",
+    autres: [
+      "Les conservateurs promettent de placer le gouvernement sous l'autorité directe du pape s'ils remportent les élections",
+      "Les réformistes ayant interdit les écoles confessionnelles, l'Église doit s'allier à leurs adversaires politiques"
+    ]},
+  { d: 4, page: 78, a: "Les idées de l'Institut canadien", b: "La condamnation par Mgr Bourget et par le pape",
+    bonne: "La tolérance et la liberté de pensée prônées par l'Institut, qui veut séparer l'Église et l'État, déplaisent à l'Église",
+    autres: [
+      "L'Institut canadien veut confier l'éducation de tous les enfants du Bas-Canada à des écoles protestantes anglophones",
+      "Les membres de l'Institut refusent de payer la dîme et organisent de grandes manifestations contre le clergé"
+    ]},
+  { d: 5, page: 90, a: "La colonisation des terres de la rivière Rouge", b: "La formation du Comité national des Métis",
+    bonne: "Les Métis craignent de perdre leurs terres et de voir disparaître leur mode de vie et leur culture",
+    autres: [
+      "Les Métis veulent empêcher les colons américains de traverser la frontière pour s'installer sur leurs terres",
+      "Les Métis refusent de payer les nouvelles taxes imposées par la Compagnie de la Baie d'Hudson sur leurs récoltes"
+    ]},
+  { d: 5, page: 92, a: "La famine dans l'Ouest", b: "La signature des traités numérotés",
+    bonne: "Dans ce contexte difficile, les Premières Nations cèdent leurs territoires en échange de réserves et d'aide alimentaire",
+    autres: [
+      "Le gouvernement menace de déporter aux États-Unis toutes les nations qui refuseraient de signer ces traités avec lui",
+      "Les traités permettent aux Premières Nations de récupérer les terres déjà défrichées par les colons venus d'Ontario"
     ]}
 ];
 
 /* « Cause ou conséquence ? » */
 const CC = [
-  { page: 37, centre: "La création des réserves indiennes au Bas-Canada (1851)",
+  { d: 1, page: 37, centre: "La création des réserves indiennes au Bas-Canada (1851)",
     fait: "Les territoires de chasse et de pêche des Premières Nations sont touchés par l'exploitation forestière et la colonisation",
     bonne: "cause", expl: "C'est dans ce contexte, et en s'inspirant de la commission Bagot, que le Parlement crée des réserves à l'usage exclusif des Premières Nations." },
-  { page: 37, centre: "L'incendie du parlement de Montréal (1849)",
+  { d: 1, page: 37, centre: "L'incendie du parlement de Montréal (1849)",
     fait: "L'alliance réformiste fait adopter une loi qui indemnise des victimes des rébellions de 1837-1838",
     bonne: "cause", expl: "Comme les victimes indemnisées sont surtout des Canadiens français, cette loi déclenche une réaction violente chez certains Canadiens anglais, qui incendient le parlement." },
-  { page: 66, centre: "L'abolition du régime seigneurial (1854)",
+  { d: 3, page: 66, centre: "L'abolition du régime seigneurial (1854)",
     fait: "Les censitaires peuvent racheter leurs terres, qui deviennent des propriétés privées",
     bonne: "conséquence", expl: "L'abolition supprime les privilèges des seigneurs ; les entreprises pourront ensuite acquérir des terres et exploiter les cours d'eau." },
-  { page: 47, centre: "La fin du traité de réciprocité (1866)",
+  { d: 2, page: 47, centre: "La fin du traité de réciprocité (1866)",
     fait: "L'idée d'une union de toutes les colonies britanniques d'Amérique du Nord gagne des partisans",
     bonne: "conséquence", expl: "Privée du marché américain, la Province du Canada doit augmenter ses échanges avec les colonies voisines : l'union devient une option attrayante." },
-  { page: 66, centre: "Après 1870, les agriculteurs privilégient la production laitière",
+  { d: 3, page: 66, centre: "Après 1870, les agriculteurs privilégient la production laitière",
     fait: "Cette production exige peu d'employés et est moins exposée aux variations climatiques",
-    bonne: "cause", expl: "Ces avantages, et la grande diversité de produits (lait, beurre, fromage, crème), font de l'industrie laitière le principal secteur agricole du Québec à la fin du siècle." }
+    bonne: "cause", expl: "Ces avantages, et la grande diversité de produits (lait, beurre, fromage, crème), font de l'industrie laitière le principal secteur agricole du Québec à la fin du siècle." },
+  { d: 4, page: 69, centre: "Les femmes et les enfants travaillent dans les usines",
+    fait: "Le salaire d'un ouvrier ne suffit généralement pas à faire vivre une famille",
+    bonne: "cause", expl: "C'est pourquoi tous les membres de la famille doivent souvent travailler ; les employeurs leur versent un salaire encore plus bas." },
+  { d: 4, page: 74, centre: "Des milliers d'Irlandais s'installent dans les colonies britanniques d'Amérique du Nord",
+    fait: "La Grande Famine sévit en Irlande à partir de 1845",
+    bonne: "cause", expl: "La famine pousse des milliers d'Irlandais à quitter leur pays ; en 1847, beaucoup meurent du typhus pendant la traversée ou à la Grosse Île." },
+  { d: 4, page: 77, centre: "En 1875, le ministère de l'Instruction publique est aboli",
+    fait: "L'enseignement est confié au Conseil de l'instruction publique, formé d'un comité catholique et d'un comité protestant",
+    bonne: "conséquence", expl: "Après avoir consulté les évêques, le premier ministre Boucher de Boucherville confie l'éducation à ce conseil, où siègent tous les évêques." },
+  { d: 5, page: 91, centre: "La proportion de colons canadiens-anglais augmente au Manitoba",
+    fait: "En 1891, les francophones ne représentent plus que 7,3 % de la population du Manitoba",
+    bonne: "conséquence", expl: "Les colons anglophones prennent le contrôle du gouvernement manitobain ; de nombreux Métis partent s'établir ailleurs dans l'Ouest." },
+  { d: 5, page: 88, centre: "Le Dominion achète la Terre de Rupert et le Territoire du Nord-Ouest (1869)",
+    fait: "Le gouvernement veut empêcher les États-Unis d'occuper et d'annexer ces terres laissées sans défense",
+    bonne: "cause", expl: "C'est l'une des trois raisons de l'achat, avec la volonté d'offrir des terres aux colons et de créer un plus grand espace économique." }
 ];
 
 /* « Ça change ? » */
 const CHG = [
-  { page: 32, avant: "Avant 1840 : le Haut-Canada et le Bas-Canada sont deux colonies distinctes",
+  { d: 1, page: 32, avant: "Avant 1840 : le Haut-Canada et le Bas-Canada sont deux colonies distinctes",
     apres: "Après l'Acte d'Union : le Haut-Canada et le Bas-Canada sont réunis dans la Province du Canada",
     bonne: "changement", expl: "L'Acte d'Union crée une seule colonie, avec une seule Chambre d'assemblée : c'est une union législative." },
-  { page: 33, avant: "Avant 1840 : les lois civiles françaises s'appliquent au Bas-Canada",
+  { d: 1, page: 33, avant: "Avant 1840 : les lois civiles françaises s'appliquent au Bas-Canada",
     apres: "Après l'Acte d'Union : dans le Bas-Canada, les affaires civiles sont réglées selon les lois civiles françaises",
     bonne: "continuité", expl: "L'Acte d'Union maintient les lois civiles françaises dans le Bas-Canada, même si l'anglais devient la seule langue officielle." },
-  { page: 36, avant: "Avant 1848 : les membres du Conseil exécutif sont nommés par le gouverneur",
+  { d: 1, page: 36, avant: "Avant 1848 : les membres du Conseil exécutif sont nommés par le gouverneur",
     apres: "À partir de 1848 : les membres du Conseil exécutif sont choisis parmi les élus du parti majoritaire",
     bonne: "changement", expl: "Avec la responsabilité ministérielle, le Conseil exécutif doit avoir l'appui de la majorité des députés pour rester au pouvoir." },
-  { page: 36, avant: "Avant 1848 : le Royaume-Uni dirige les relations de la colonie avec les autres États",
+  { d: 1, page: 36, avant: "Avant 1848 : le Royaume-Uni dirige les relations de la colonie avec les autres États",
     apres: "Après 1848 : le Royaume-Uni gère les affaires extérieures de la Province du Canada",
     bonne: "continuité", expl: "Le gouvernement responsable donne plus d'autonomie en affaires intérieures, mais la Province du Canada demeure une colonie." },
-  { page: 59, avant: "Avant l'industrialisation : un artisan exécute toutes les étapes de la fabrication d'un bien",
+  { d: 3, page: 59, avant: "Avant l'industrialisation : un artisan exécute toutes les étapes de la fabrication d'un bien",
     apres: "Avec l'industrialisation : la production est divisée en tâches simples confiées à plusieurs ouvriers",
-    bonne: "changement", expl: "La mécanisation et la division du travail permettent de produire plus de biens, plus rapidement." }
+    bonne: "changement", expl: "La mécanisation et la division du travail permettent de produire plus de biens, plus rapidement." },
+  { d: 4, page: 80, avant: "Avant 1849 : certaines femmes propriétaires participent aux élections",
+    apres: "En 1849 : une loi adoptée par le gouvernement Baldwin-LaFontaine retire le droit de vote aux femmes",
+    bonne: "changement", expl: "Aucune disposition de l'Acte constitutionnel de 1791 n'interdisait le vote des femmes ; la loi de 1849 le leur retire." },
+  { d: 4, page: 72, avant: "1861 : environ quatre Québécois sur cinq vivent à la campagne",
+    apres: "1891 : environ deux Québécois sur trois vivent à la campagne",
+    bonne: "continuité", expl: "Malgré l'exode rural et l'urbanisation, la population du Québec demeure majoritairement rurale à la fin du 19e siècle." },
+  { d: 4, page: 73, avant: "Avant les programmes de colonisation : de nombreux Canadiens français émigrent vers les États-Unis",
+    apres: "Après la création du ministère de l'Agriculture et de la Colonisation (1888) : les États-Unis attirent de nombreux émigrants canadiens-français",
+    bonne: "continuité", expl: "Malgré les efforts du gouvernement et du clergé, la colonisation connaît un succès limité ; l'émigration vers les États-Unis se poursuit." },
+  { d: 5, page: 93, avant: "Avant 1869 : les Premières Nations sont dirigées par leurs chefferies traditionnelles",
+    apres: "Après 1869 : une loi fédérale remplace les chefferies traditionnelles par des conseils de bande",
+    bonne: "changement", expl: "L'Acte pourvoyant à l'émancipation graduelle des Sauvages (1869) impose les conseils de bande, dans un but d'assimilation." },
+  { d: 5, page: "37 et 92", avant: "1851 : les réserves créées au Bas-Canada doivent favoriser la conversion des Autochtones à l'agriculture",
+    apres: "Années 1870 : le gouvernement fournit des outils agricoles pour inciter les Premières Nations de l'Ouest à se sédentariser",
+    bonne: "continuité", expl: "Dans les deux cas, le gouvernement cherche à amener les Autochtones à adopter un mode de vie sédentaire basé sur l'agriculture." }
 ];
 
 /* « Vrai ou faux ? » */
 const VF = [
-  { page: 32, enonce: "Dans son rapport, Lord Durham recommande d'unir le Haut-Canada et le Bas-Canada.", bonne: "vrai",
+  { d: 1, page: 32, enonce: "Dans son rapport, Lord Durham recommande d'unir le Haut-Canada et le Bas-Canada.", bonne: "vrai",
     expl: "Durham voit l'union comme une solution aux conflits ; selon lui, elle mènera à l'assimilation des Canadiens français." },
-  { page: 33, enonce: "Avec l'Acte d'Union, le français devient la seule langue officielle de la Province du Canada.", bonne: "faux",
+  { d: 1, page: 33, enonce: "Avec l'Acte d'Union, le français devient la seule langue officielle de la Province du Canada.", bonne: "faux",
     expl: "C'est l'anglais qui devient la seule langue officielle de la Province du Canada." },
-  { page: 33, enonce: "Entre 1841 et 1866, la capitale de la Province du Canada déménage à plusieurs reprises.", bonne: "vrai",
+  { d: 1, page: 33, enonce: "Entre 1841 et 1866, la capitale de la Province du Canada déménage à plusieurs reprises.", bonne: "vrai",
     expl: "Kingston, Montréal, Toronto et Québec s'échangent le titre ; la reine Victoria désigne Ottawa en 1857, et le Parlement s'y installe en 1866." },
-  { page: 44, enonce: "Le traité de réciprocité de 1854 impose des droits de douane élevés sur les matières premières échangées avec les États-Unis.", bonne: "faux",
+  { d: 2, page: 44, enonce: "Le traité de réciprocité de 1854 impose des droits de douane élevés sur les matières premières échangées avec les États-Unis.", bonne: "faux",
     expl: "C'est l'inverse : le traité permet d'échanger des matières premières et des produits agricoles sans payer de droits de douane." },
-  { page: 37, enonce: "En 1849, le parlement de la Province du Canada, situé à Montréal, est incendié.", bonne: "vrai",
-    expl: "Certains Canadiens anglais, en colère contre la loi sur l'indemnisation, saccagent et incendient le parlement." }
+  { d: 1, page: 37, enonce: "En 1849, le parlement de la Province du Canada, situé à Montréal, est incendié.", bonne: "vrai",
+    expl: "Certains Canadiens anglais, en colère contre la loi sur l'indemnisation, saccagent et incendient le parlement." },
+  { d: 4, page: 72, enonce: "Entre 1850 et 1890, plus de 400 000 Canadiens français s'installent aux États-Unis.", bonne: "vrai",
+    expl: "Attirés par les industries du Nord-Est américain, ils s'installent surtout au Massachusetts, au Vermont et au Maine." },
+  { d: 4, page: 78, enonce: "L'Institut canadien de Montréal est fondé par des membres du clergé pour diffuser les idées de l'Église.", bonne: "faux",
+    expl: "Il est fondé en 1844 par de jeunes professionnels et intellectuels ; ses membres veulent séparer l'Église et l'État." },
+  { d: 4, page: 80, enonce: "À la fin du 19e siècle au Québec, les femmes sont considérées comme des mineures aux yeux de la loi.", bonne: "vrai",
+    expl: "Elles ne peuvent agir sans le consentement de leur père ou de leur époux, et n'ont ni le droit de vote ni celui d'être candidates." },
+  { d: 4, page: 82, enonce: "François-Xavier Garneau écrit son Histoire du Canada pour montrer que les Canadiens n'ont pas d'histoire.", bonne: "faux",
+    expl: "C'est l'inverse : Garneau veut démontrer que les Canadiens possèdent une histoire riche, contrairement à ce qu'affirmait Durham." },
+  { d: 5, page: 93, enonce: "La Loi sur les Indiens de 1876 fait des Autochtones des personnes mineures sous la tutelle du gouvernement.", bonne: "vrai",
+    expl: "Les autorités peuvent intervenir dans plusieurs aspects de leur vie par l'entremise des agents des Affaires indiennes." }
 ];
 
 /* « Mets en ordre » : dates révélées seulement dans la rétroaction. */
 const TEMPS = [
-  { page: "32 à 37", items: [["L'adoption de l'Acte d'Union",1840],["La formation de l'alliance Baldwin-LaFontaine",1841],["Le dépôt du rapport de la commission Bagot",1844],["L'obtention de la responsabilité ministérielle",1848]] },
-  { page: "35 à 45", items: [["La fin du protectionnisme britannique",1846],["L'incendie du parlement de Montréal",1849],["La fondation de la Compagnie du Grand Tronc",1852],["La signature du traité de réciprocité",1854]] },
-  { page: "46 à 66", items: [["L'abolition du régime seigneurial",1854],["Le début de la guerre de Sécession",1861],["La formation de la Grande Coalition",1864],["La fin du traité de réciprocité",1866]] },
-  { page: "37 à 66", items: [["La création des réserves indiennes au Bas-Canada",1851],["L'abolition du régime seigneurial",1854],["L'entrée en vigueur du Code civil du Bas-Canada",1866],["L'ouverture officielle de l'Intercolonial",1876]] },
-  { page: "36 à 63", items: [["L'obtention de la responsabilité ministérielle",1848],["La signature du traité de réciprocité",1854],["La formation de la Grande Coalition",1864],["L'ouverture officielle de l'Intercolonial",1876]] }
+  { d: 1, page: "32 à 37", items: [["L'adoption de l'Acte d'Union",1840],["La formation de l'alliance Baldwin-LaFontaine",1841],["Le dépôt du rapport de la commission Bagot",1844],["L'obtention de la responsabilité ministérielle",1848]] },
+  { d: 2, page: "35 à 45", items: [["La fin du protectionnisme britannique",1846],["L'incendie du parlement de Montréal",1849],["La fondation de la Compagnie du Grand Tronc",1852],["La signature du traité de réciprocité",1854]] },
+  { d: 3, page: "46 à 66", items: [["L'abolition du régime seigneurial",1854],["Le début de la guerre de Sécession",1861],["La formation de la Grande Coalition",1864],["La fin du traité de réciprocité",1866]] },
+  { d: 3, page: "37 à 66", items: [["La création des réserves indiennes au Bas-Canada",1851],["L'abolition du régime seigneurial",1854],["L'entrée en vigueur du Code civil du Bas-Canada",1866],["L'ouverture officielle de l'Intercolonial",1876]] },
+  { d: 3, page: "36 à 63", items: [["L'obtention de la responsabilité ministérielle",1848],["La signature du traité de réciprocité",1854],["La formation de la Grande Coalition",1864],["L'ouverture officielle de l'Intercolonial",1876]] },
+  { d: 4, page: "74 à 78", items: [["La fondation de l'Institut canadien de Montréal",1844],["L'épidémie de typhus à la Grosse Île",1847],["La fondation de l'Université Laval",1852],["La fermeture de l'Institut canadien",1877]] },
+  { d: 5, page: "92 et 93", items: [["La loi qui impose les conseils de bande",1869],["Le début des traités numérotés",1871],["La Loi sur les Indiens",1876],["L'entente formelle sur les pensionnats indiens",1892]] },
+  { d: 4, page: "70 à 82", items: [["La loi fédérale qui reconnaît la légalité des syndicats",1872],["L'ouverture de la faculté des arts de McGill aux femmes",1884],["L'adoption de l'Acte des manufactures de Québec",1885],["La fondation de l'École littéraire de Montréal",1895]] },
+  { d: 5, page: "73 à 99", items: [["La création du Manitoba",1870],["La création du ministère de l'Agriculture et de la Colonisation",1888],["L'abolition des écoles séparées au Manitoba",1890],["L'arrivée de Wilfrid Laurier au poste de premier ministre",1896]] },
+  { d: 4, page: "74 à 82", items: [["L'épidémie de typhus à la Grosse Île",1847],["La condamnation de l'Institut canadien par le pape",1868],["L'abolition du ministère de l'Instruction publique",1875],["La publication d'Angéline de Montbrun sous forme de livre",1884]] }
 ];
 
 /* « Les paires » */
 const PAIRES = [
-  { page: 32, desc: "Auteur du rapport de 1839 qui recommande d'unir les deux Canadas", bonne: "Lord Durham" },
-  { page: 35, desc: "Chef des réformistes du Haut-Canada, ardent défenseur du principe du gouvernement responsable", bonne: "Robert Baldwin" },
-  { page: 35, desc: "Chef des réformistes du Bas-Canada, il défend les droits des Canadiens français", bonne: "Louis-Hippolyte LaFontaine" },
-  { page: 36, desc: "Gouverneur qui demande en 1848 de former le premier gouvernement responsable", bonne: "Lord Elgin" },
-  { page: 37, desc: "Gouverneur qui lance en 1842 une commission d'enquête sur l'administration des Affaires indiennes", bonne: "Charles Bagot" }
+  { d: 1, page: 32, desc: "Auteur du rapport de 1839 qui recommande d'unir les deux Canadas", bonne: "Lord Durham" },
+  { d: 1, page: 35, desc: "Chef des réformistes du Haut-Canada, ardent défenseur du principe du gouvernement responsable", bonne: "Robert Baldwin" },
+  { d: 1, page: 35, desc: "Chef des réformistes du Bas-Canada, il défend les droits des Canadiens français", bonne: "Louis-Hippolyte LaFontaine" },
+  { d: 1, page: 36, desc: "Gouverneur qui demande en 1848 de former le premier gouvernement responsable", bonne: "Lord Elgin" },
+  { d: 1, page: 37, desc: "Gouverneur qui lance en 1842 une commission d'enquête sur l'administration des Affaires indiennes", bonne: "Charles Bagot" },
+  { d: 4, page: 73, desc: "Curé surnommé « le roi du Nord », grand promoteur de la colonisation des Laurentides", bonne: "Antoine Labelle" },
+  { d: 4, page: 76, desc: "Évêque de Montréal qui fait venir de France de nouveaux ordres religieux", bonne: "Ignace Bourget" },
+  { d: 4, page: 82, desc: "Auteur d'une Histoire du Canada qui répond à Durham", bonne: "François-Xavier Garneau" },
+  { d: 4, page: 82, desc: "Première romancière canadienne-française, connue sous le pseudonyme de Laure Conan", bonne: "Félicité Angers" },
+  { d: 5, page: 92, desc: "Chef cri des Plaines longtemps opposé à la signature du traité no 6", bonne: "Mistahimaskwa (Big Bear)" },
+  { d: 5, page: 90, desc: "Métis francophone qui prend la direction du Comité national des Métis en 1869", bonne: "Louis Riel" }
 ];
 
 /* « Pareil ou pas ? » */
 const PAREIL = [
-  { page: 35, sujet: "Le changement politique dans la Province du Canada, en 1841", a: "Les réformistes", b: "Les conservateurs (tories)", bonne: "différent",
+  { d: 1, page: 35, sujet: "Le changement politique dans la Province du Canada, en 1841", a: "Les réformistes", b: "Les conservateurs (tories)", bonne: "différent",
     expl: "Les réformistes réclament un gouvernement responsable ; les tories ne veulent aucun changement, car ils exercent une influence sur les institutions nommées." },
-  { page: 35, sujet: "Le gouvernement responsable", a: "Robert Baldwin", b: "Louis-Hippolyte LaFontaine", bonne: "pareil",
+  { d: 1, page: 35, sujet: "Le gouvernement responsable", a: "Robert Baldwin", b: "Louis-Hippolyte LaFontaine", bonne: "pareil",
     expl: "Les deux chefs réformistes s'allient pour obtenir le gouvernement responsable." },
-  { page: 42, sujet: "La représentation proportionnelle à la population, dans les années 1850", a: "Les députés du Haut-Canada (Clear Grits)", b: "Les députés du Bas-Canada", bonne: "différent",
+  { d: 2, page: 42, sujet: "La représentation proportionnelle à la population, dans les années 1850", a: "Les députés du Haut-Canada (Clear Grits)", b: "Les députés du Bas-Canada", bonne: "différent",
     expl: "Le Haut-Canada, devenu plus peuplé, la réclame ; le Bas-Canada s'y oppose, car ses députés deviendraient moins nombreux." },
-  { page: 52, sujet: "Le projet de confédération, après les premières négociations", a: "Terre-Neuve", b: "L'Île-du-Prince-Édouard", bonne: "pareil",
+  { d: 2, page: 52, sujet: "Le projet de confédération, après les premières négociations", a: "Terre-Neuve", b: "L'Île-du-Prince-Édouard", bonne: "pareil",
     expl: "Craignant d'être sous-représentées en raison de leur faible population, les deux colonies se retirent du projet." },
-  { page: 46, sujet: "L'esclavage, au moment de la guerre de Sécession", a: "Les États du Nord", b: "Les États du Sud", bonne: "différent",
-    expl: "Le Nord souhaite la fin de l'esclavage ; le Sud, dont l'économie repose sur la culture du coton, s'y oppose et fait sécession." }
+  { d: 2, page: 46, sujet: "L'esclavage, au moment de la guerre de Sécession", a: "Les États du Nord", b: "Les États du Sud", bonne: "différent",
+    expl: "Le Nord souhaite la fin de l'esclavage ; le Sud, dont l'économie repose sur la culture du coton, s'y oppose et fait sécession." },
+  { d: 4, page: "76 et 78", sujet: "La place de l'Église dans la société", a: "Les ultramontains", b: "Les membres de l'Institut canadien", bonne: "différent",
+    expl: "Les ultramontains veulent l'Église présente partout, même en politique ; l'Institut canadien veut séparer l'Église et l'État." },
+  { d: 4, page: 73, sujet: "L'émigration des Canadiens français vers les États-Unis", a: "Le gouvernement du Québec", b: "Le clergé catholique", bonne: "pareil",
+    expl: "Les deux voient cette émigration d'un mauvais œil et collaborent pour mettre sur pied des programmes de colonisation." },
+  { d: 4, page: 82, sujet: "Le contenu des œuvres littéraires", a: "La littérature patriotique", b: "L'École littéraire de Montréal", bonne: "différent",
+    expl: "La littérature patriotique reflète l'identité définie par le nationalisme de survivance ; l'École littéraire prône une écriture libre, sans thème imposé." },
+  { d: 5, page: 92, sujet: "Le traité no 6", a: "Mistahimaskwa (Big Bear)", b: "Le gouvernement du Canada", bonne: "différent",
+    expl: "Le gouvernement veut obtenir la cession des terres ; Big Bear s'oppose longtemps au traité, qu'il juge néfaste pour son peuple." },
+  { d: 5, page: 92, sujet: "Le mode de vie des Autochtones", a: "Les missionnaires chrétiens", b: "Le gouvernement fédéral", bonne: "pareil",
+    expl: "Les deux mettent en œuvre des moyens pour amener les Autochtones à adopter un mode de vie occidental." }
 ];
 
 /* « Sur la carte » : en attente d'une carte libre de droits de 1867. */
@@ -329,7 +459,9 @@ function ouvrir(type){
   const T={chaine:["La chaîne","Liens de causalité"],lien:["Le bon lien","Liens de causalité"],
            cc:["Cause ou conséquence ?","Causes et conséquences"],carte:["Sur la carte","Situer dans l'espace"],vf:["Vrai ou faux ?","Établir des faits"],temps:["Mets en ordre","Situer dans le temps"],paires:["Les paires","Mettre en relation des faits"],pareil:["Pareil ou pas ?","Différences et similitudes"],chg:["Ça change ?","Changements et continuités"]};
   $("act-titre").textContent=T[type][0]; $("act-oi").textContent=T[type][1];
-  etat = { type, i:0, score:0, ordre: melanger([...Array(5).keys()]) };
+  const src={chaine:CHAINES,lien:LIENS,cc:CC,chg:CHG,vf:VF,temps:TEMPS,paires:PAIRES,pareil:PAREIL,carte:CARTE}[type];
+  const ok=d=>FILTRE==="tout"||(FILTRE==="1-3"?d<=3:d>=4);
+  etat = { type, i:0, score:0, ordre: melanger(src.map((_,k)=>k).filter(k=>ok(src[k].d))).slice(0,5) };
   question();
 }
 function fermer(){ $("activite").style.display="none"; $("accueil").style.display="block"; window.scrollTo(0,0); }
@@ -338,7 +470,7 @@ function etoiles(){
 }
 function question(){
   etoiles();
-  if(etat.i>=5) return fin();
+  if(etat.i>=etat.ordre.length) return fin();
   const n = etat.ordre[etat.i];
   ({chaine:()=>chaine(CHAINES[n]), lien:()=>lien(LIENS[n]),
     carte:()=>carte(CARTE[n]), vf:()=>binaire(VF[n],["vrai","faux"]), pareil:()=>binaire(PAREIL[n],["pareil","différent"]),
@@ -466,13 +598,18 @@ function paires(q){
 }
 
 function fin(){
-  $("act-corps").innerHTML = `<div class="fin"><div class="score">${etat.score} / 5</div>
+  $("act-corps").innerHTML = `<div class="fin"><div class="score">${etat.score} / ${etat.ordre.length}</div>
     <p>${etat.score===5?'Parfait.':etat.score>=3?'Bien. Revois les pages indiquées pour tes erreurs.':'Retourne à ton cahier, puis recommence.'}</p>
     <button class="suivant" id="refaire">Recommencer</button> <button class="retour" id="fin-retour">Retour</button></div>`;
   $("refaire").onclick=()=>ouvrir(etat.type); $("fin-retour").onclick=fermer;
 }
 
 document.querySelectorAll("[data-act]").forEach(b=>b.onclick=()=>ouvrir(b.dataset.act));
+let FILTRE="tout";
+try{ const f=localStorage.getItem("hqc4-ch1-filtre"); if(["1-3","4-5","tout"].includes(f)) FILTRE=f; }catch(e){}
+function majFiltre(){ document.querySelectorAll(".chip").forEach(c=>c.classList.toggle("actif",c.dataset.f===FILTRE)); }
+document.querySelectorAll(".chip").forEach(c=>c.onclick=()=>{ FILTRE=c.dataset.f; try{localStorage.setItem("hqc4-ch1-filtre",FILTRE);}catch(e){} majFiltre(); });
+majFiltre();
 $("retour").onclick=fermer;
 </script>
 </body>
