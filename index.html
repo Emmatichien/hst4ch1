@@ -55,6 +55,13 @@
   .credit{font-size:.7rem;color:var(--doux);margin:4px 0 12px}
   .lettres{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
   .lettres .option{text-align:center;font-weight:800;margin:0}
+  .qr-tag{display:inline-block;font-size:.75rem;color:var(--accent);background:var(--accent-clair);border-radius:6px;padding:2px 8px;margin-bottom:8px}
+  .qr-q{white-space:pre-line;font-weight:600;margin:0 0 10px}
+  .qr-zone{width:100%;min-height:110px;font:inherit;border:1px solid var(--bord);border-radius:12px;padding:10px;background:#fff;resize:vertical}
+  .qr-rep{white-space:pre-line;background:var(--vert-clair);border-radius:12px;padding:12px;margin-top:12px}
+  .auto{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+  .auto .option{width:auto;flex:1 1 150px;text-align:center;margin:0}
+  .qr-credit{font-size:.72rem;color:var(--doux);margin-top:10px}
   footer{color:var(--doux);font-size:.8rem;text-align:center;margin:40px 0 16px}
 
   /* Activités */
@@ -146,6 +153,14 @@
             <button class="act" data-act="chaine"><b>La chaîne</b><i>★ 5 questions</i></button>
             <button class="act examen" data-act="lien"><b>Le bon lien <span class="badge">Épreuve</span></b><i>★ 5 questions</i></button>
           </div></div>
+      </div>
+    </section>
+
+    <section class="bloc">
+      <div class="bloc-titre"><div class="num">4</div><h2>RÉDIGER</h2><span>Comme à l'épreuve : tu écris, puis tu compares</span></div>
+      <div class="grille">
+        <div class="oi"><h3>Questions d'examen</h3><div class="desc">Toutes les opérations intellectuelles, réponse rédigée</div>
+          <div class="acts"><button class="act examen" data-act="qr"><b>Questions d'examen <span class="badge">Épreuve</span></b><i>★ 5 questions</i></button></div></div>
       </div>
     </section>
 
@@ -573,16 +588,73 @@ const CARTE = [
     expl: "L'Île-du-Prince-Édouard, qui s'était d'abord retirée du projet, se joint au Dominion en 1873." }
 ];
 
+/* « Questions d'examen » : questions à réponse rédigée (banque HQC du CSSBF),
+   sans documents, corrigés vérifiés et au besoin corrigés d'après le cahier. */
+const QR = [
+  { d: 1, page: 32, oi: "Établir des faits", q: "Indiquez le nom de la constitution adoptée en 1840 par les autorités britanniques.", rep: "L'Acte d'Union." },
+  { d: 1, page: 32, oi: "Déterminer des causes et des conséquences", q: "Indiquez une cause de l'adoption de l'Acte d'Union par les autorités britanniques en 1840.", rep: "Les rébellions de 1837-1838 dans le Bas-Canada et le Haut-Canada. OU Les recommandations du rapport Durham, qui propose d'unir les deux Canadas." },
+  { d: 1, page: 32, oi: "Déterminer des causes et des conséquences", q: "Indiquez une conséquence politique de l'Acte d'Union pour les Canadiens français.", rep: "Leur influence politique est réduite : ils deviennent minoritaires dans l'unique Chambre d'assemblée, puisque chaque région obtient 42 députés malgré la population plus nombreuse du Bas-Canada." },
+  { d: 1, page: "32 et 33", oi: "Établir des liens de causalité", q: "Expliquez comment la constitution adoptée en 1840 modifie la représentation politique des habitants de la Province du Canada.\n• Le nom de la constitution adoptée en 1840\n• Un changement dans l'organisation politique de la colonie\n• Une conséquence pour la population du Bas-Canada", rep: "L'Acte d'Union est adopté en 1840. Il crée une seule Chambre d'assemblée pour le Haut-Canada et le Bas-Canada, avec 42 députés par région. Les Canadiens français du Bas-Canada, pourtant plus nombreux, y deviennent minoritaires : leur influence politique diminue." },
+  { d: 1, page: 37, oi: "Établir des faits", q: "Indiquez le nom de la commission d'enquête dont les recommandations inspirent la création des réserves indiennes au Bas-Canada.", rep: "La commission Bagot (1842-1844)." },
+  { d: 1, page: 37, oi: "Établir des faits", q: "Indiquez le nom donné aux territoires créés en 1851 pour l'usage exclusif des Premières Nations au Bas-Canada.", rep: "Les réserves (réserves indiennes)." },
+  { d: 1, page: 35, oi: "Déterminer des causes et des conséquences", q: "Dans quel but les réformistes du Haut-Canada et du Bas-Canada forment-ils une alliance en 1841 ?", rep: "Pour donner davantage de poids à leurs revendications politiques, notamment l'obtention d'un gouvernement responsable." },
+  { d: 1, page: 35, oi: "Déterminer des changements et des continuités", q: "Indiquez un changement dans les relations politiques entre les réformistes du Haut-Canada et du Bas-Canada au début des années 1840.", rep: "Les réformistes des deux Canadas forment une alliance politique (l'alliance Baldwin-LaFontaine)." },
+  { d: 1, page: 36, oi: "Déterminer des causes et des conséquences", q: "Indiquez une conséquence sur l'organisation politique de l'alliance entre les réformistes du Haut-Canada et du Bas-Canada.", rep: "L'obtention du gouvernement responsable en 1848 : l'alliance, majoritaire, forme le premier gouvernement responsable." },
+  { d: 1, page: "35 et 36", oi: "Établir des liens de causalité", q: "Expliquez comment une action des réformistes du Haut-Canada et du Bas-Canada entraîne des changements dans l'organisation politique de la colonie.\n• Une action des réformistes\n• Une conséquence politique à la Chambre d'assemblée\n• Un changement dans l'organisation politique de la colonie", rep: "Les réformistes des deux Canadas s'allient. Cette alliance remporte la majorité des sièges à la Chambre d'assemblée. En 1848, le gouverneur Elgin leur demande de former le premier gouvernement responsable : les membres du Conseil exécutif sont désormais choisis parmi les élus." },
+  { d: 1, page: 36, oi: "Déterminer des changements et des continuités", q: "Indiquez un changement dans la formation du Conseil exécutif après l'établissement du gouvernement responsable.", rep: "Les membres du Conseil exécutif sont choisis parmi les députés du parti majoritaire, et non plus nommés librement par le gouverneur. Ils doivent avoir l'appui de la majorité des députés pour conserver le pouvoir." },
+  { d: 2, page: 42, oi: "Déterminer des causes et des conséquences", q: "Indiquez une conséquence de l'instabilité ministérielle dans la Province du Canada.", rep: "Les gouvernements se succèdent rapidement (plus de dix entre 1854 et 1864), ce qui rend la gestion des affaires de la colonie de plus en plus difficile." },
+  { d: 2, page: 50, oi: "Établir des faits", q: "Indiquez le nom donné à l'alliance formée en 1864 par les principaux chefs politiques de la Province du Canada.", rep: "La Grande Coalition." },
+  { d: 2, page: 50, oi: "Déterminer des causes et des conséquences", q: "Indiquez une cause de la formation de la Grande Coalition.", rep: "La volonté de mettre fin à l'instabilité ministérielle (George Brown est déterminé à y mettre fin)." },
+  { d: 2, page: 50, oi: "Déterminer des causes et des conséquences", q: "Indiquez une conséquence de la formation de la Grande Coalition sur l'avenir politique des colonies britanniques d'Amérique du Nord.", rep: "La coalition lance l'idée d'une confédération de toutes les colonies britanniques d'Amérique du Nord (le projet d'union)." },
+  { d: 2, page: "50 à 52", oi: "Établir des liens de causalité", q: "Expliquez comment la situation politique de la Province du Canada conduit à l'adoption d'une nouvelle constitution en 1867.\n• Une situation politique dans la Province du Canada\n• Une action des chefs des partis politiques\n• Le nom de la nouvelle constitution adoptée en 1867", rep: "L'instabilité ministérielle paralyse la Province du Canada. Pour y mettre fin, les chefs des partis forment la Grande Coalition, qui lance le projet d'union des colonies. Après les conférences, le Parlement britannique adopte en 1867 l'Acte de l'Amérique du Nord britannique (AANB)." },
+  { d: 2, page: 55, oi: "Établir des faits", q: "Indiquez le nom de la nouvelle entité politique créée en 1867.", rep: "Le Dominion du Canada." },
+  { d: 2, page: 44, oi: "Déterminer des causes et des conséquences", q: "Indiquez une conséquence du traité de réciprocité pour l'économie de la Province du Canada.", rep: "Les échanges commerciaux avec les États-Unis augmentent : pendant plus d'une décennie, les Canadiens profitent du vaste marché américain sans payer de droits de douane sur les matières premières et les produits agricoles." },
+  { d: 2, page: "44 et 48", oi: "Déterminer des changements et des continuités", q: "Indiquez un changement dans les partenaires commerciaux de la Province du Canada entre les années 1840 et 1860.", rep: "Les exportations se déplacent du Royaume-Uni vers les États-Unis : en 1860, la majorité des exportations des colonies va aux États-Unis." },
+  { d: 3, page: 59, oi: "Déterminer des changements et des continuités", q: "Indiquez un changement concernant l'organisation du travail dans la seconde moitié du 19e siècle.", rep: "On passe de l'artisan qui exécute toutes les étapes de la fabrication à la division du travail : la production est découpée en tâches simples confiées à plusieurs ouvriers." },
+  { d: 3, page: 66, oi: "Déterminer des changements et des continuités", q: "Indiquez un changement dans la production agricole du Québec dans la seconde moitié du 19e siècle.", rep: "Les agriculteurs diversifient leurs cultures, puis privilégient la production laitière après 1870 ; l'industrie laitière devient le principal secteur agricole." },
+  { d: 3, page: 66, oi: "Déterminer des changements et des continuités", q: "Indiquez un changement dans les méthodes de travail des agriculteurs près des centres urbains à la fin du 19e siècle.", rep: "Les fermes se mécanisent : les agriculteurs utilisent de nouvelles machines, surtout à partir des années 1880." },
+  { d: 3, page: 66, oi: "Déterminer des causes et des conséquences", q: "Indiquez une conséquence de l'abolition du régime seigneurial en 1854.", rep: "Les censitaires peuvent racheter leurs terres, qui deviennent des propriétés privées. Les entreprises pourront ensuite acquérir des terres et exploiter les cours d'eau." },
+  { d: 3, page: 65, oi: "Déterminer des changements et des continuités", q: "Indiquez un changement concernant les régions d'exploitation forestière au Québec dans la seconde moitié du 19e siècle.", rep: "L'exploitation forestière s'étend à de nouvelles régions, comme l'Outaouais, la Mauricie et le Saguenay." },
+  { d: 3, page: 65, oi: "Déterminer des causes et des conséquences", q: "Indiquez une raison pour laquelle des régions comme l'Outaouais, la Mauricie ou le Saguenay attirent les investisseurs de l'industrie forestière.", rep: "Elles sont traversées par d'importants cours d'eau, indispensables au transport du bois et à l'énergie hydraulique des scieries." },
+  { d: 3, page: 65, oi: "Déterminer des causes et des conséquences", q: "Indiquez une conséquence de l'arrivée des investisseurs forestiers dans les régions d'exploitation.", rep: "Ils financent le développement de l'industrie et la mise en place d'infrastructures, comme des routes, des moulins et des puits." },
+  { d: 3, page: 60, oi: "Établir des faits", q: "Indiquez le nom du régime économique fondé sur la recherche du profit à l'aide de la production en usine.", rep: "Le capitalisme industriel." },
+  { d: 3, page: 63, oi: "Établir des liens de causalité", q: "Expliquez comment le développement du réseau ferroviaire stimule l'économie dans la seconde moitié du 19e siècle.\n• Le développement d'un nouveau réseau de transport\n• Un avantage pour la circulation des marchandises\n• Une conséquence sur l'économie", rep: "Le réseau ferroviaire se développe (Grand Tronc, puis Intercolonial). Il permet de transporter les marchandises plus facilement, plus rapidement et toute l'année. Les coûts de distribution diminuent, et la construction des voies stimule les industries forestière et métallurgique." },
+  { d: 4, page: 69, oi: "Déterminer des causes et des conséquences", q: "Indiquez une conséquence des faibles salaires sur les familles ouvrières.", rep: "Le salaire d'un ouvrier ne suffit pas à faire vivre une famille : tous les membres de la famille, y compris les femmes et les enfants, doivent souvent travailler." },
+  { d: 4, page: 69, oi: "Dégager des différences et des similitudes", q: "Indiquez une différence entre les conditions de travail des hommes et celles des femmes dans les usines au 19e siècle.", rep: "Les femmes (et les enfants) reçoivent un salaire encore plus bas que celui des hommes." },
+  { d: 4, page: 70, oi: "Déterminer des causes et des conséquences", q: "Indiquez une raison pour laquelle des ouvriers se regroupent en associations syndicales dans la seconde moitié du 19e siècle.", rep: "Pour revendiquer de meilleures conditions de travail : réduction des heures, assurance en cas de maladie ou d'accident, reconnaissance des droits des ouvriers syndiqués." },
+  { d: 4, page: 70, oi: "Établir des faits", q: "Indiquez un moyen utilisé par les ouvriers pour faire valoir leurs revendications dans la seconde moitié du 19e siècle.", rep: "Ils se regroupent en associations syndicales ; leurs revendications mènent parfois à des grèves." },
+  { d: 4, page: 70, oi: "Établir des liens de causalité", q: "Expliquez comment les conditions de travail favorisent l'organisation du mouvement ouvrier dans la seconde moitié du 19e siècle.\n• Une condition de travail dans les usines\n• Un moyen utilisé par les ouvriers\n• Un objectif poursuivi", rep: "Les ouvriers travaillent de longues heures (souvent 60 heures et plus par semaine) dans des lieux mal aérés et dangereux. Ils se regroupent en associations syndicales. Ils veulent ainsi obtenir de meilleures conditions de travail, comme une réduction des heures et une assurance en cas d'accident." },
+  { d: 4, page: 72, oi: "Déterminer des causes et des conséquences", q: "Indiquez une cause de l'exode rural au Québec dans la seconde moitié du 19e siècle.", rep: "Les industries, concentrées dans les grandes villes, ont besoin d'une main-d'œuvre abondante : des gens quittent la campagne en espérant y trouver un emploi." },
+  { d: 4, page: 72, oi: "Déterminer des causes et des conséquences", q: "Indiquez une conséquence de l'exode rural au Québec dans la seconde moitié du 19e siècle.", rep: "L'urbanisation : la population des villes augmente sans cesse." },
+  { d: 4, page: 73, oi: "Déterminer des causes et des conséquences", q: "Indiquez une cause de l'ouverture de nouvelles régions de colonisation au Québec.", rep: "L'émigration des Canadiens français vers les États-Unis, que le gouvernement et le clergé veulent freiner." },
+  { d: 4, page: 73, oi: "Établir des faits", q: "Indiquez une mesure mise en place au Québec pour freiner l'émigration des Canadiens français vers les États-Unis.", rep: "Des programmes de colonisation de nouvelles régions (Saguenay–Lac-Saint-Jean, Laurentides, Outaouais)." },
+  { d: 4, page: "72 et 73", oi: "Établir des liens de causalité", q: "Expliquez comment les difficultés des milieux ruraux entraînent une intervention des autorités pour limiter un mouvement migratoire.\n• Une difficulté dans les milieux ruraux\n• Un mouvement migratoire vers l'extérieur du Québec\n• Une intervention des autorités", rep: "Les terres agricoles de la vallée du Saint-Laurent sont surpeuplées. De nombreux Canadiens français émigrent vers les États-Unis, attirés par les industries. Le gouvernement du Québec et le clergé lancent des programmes de colonisation de nouvelles régions pour les retenir." },
+  { d: 4, page: 74, oi: "Déterminer des causes et des conséquences", q: "Indiquez une cause de l'immigration irlandaise vers les colonies britanniques d'Amérique du Nord dans les années 1840.", rep: "La Grande Famine qui sévit en Irlande à partir de 1845." },
+  { d: 4, page: 77, oi: "Déterminer des causes et des conséquences", q: "Indiquez une cause de l'émergence du nationalisme de survivance au Québec.", rep: "La crainte de l'assimilation des Canadiens français, notamment en raison de l'immigration britannique massive." },
+  { d: 4, page: 77, oi: "Déterminer des causes et des conséquences", q: "Indiquez une conséquence des lois scolaires des années 1840 sur l'organisation de l'enseignement.", rep: "Un système d'écoles confessionnelles est mis sur pied : des écoles pour les franco-catholiques et des écoles pour les anglo-protestants." },
+  { d: 4, page: 78, oi: "Déterminer des causes et des conséquences", q: "Indiquez une raison pour laquelle les anticléricaux critiquent l'influence de l'Église catholique.", rep: "Ils sont partisans de la séparation de l'Église et de l'État et croient que le clergé n'a pas le droit de s'ingérer dans la vie politique ni de censurer la vie intellectuelle." },
+  { d: 4, page: 78, oi: "Déterminer des causes et des conséquences", q: "Indiquez une raison pour laquelle l'Église catholique s'oppose à l'Institut canadien de Montréal.", rep: "La tolérance et la liberté de pensée qu'il prône lui déplaisent ; sa bibliothèque offre des livres interdits par le Vatican." },
+  { d: 4, page: 82, oi: "Déterminer des changements et des continuités", q: "Indiquez un changement concernant la place des femmes dans la littérature à la fin du 19e siècle.", rep: "Une littérature féminine francophone émerge : des femmes publient poésie, contes, nouvelles et romans (par exemple Félicité Angers, sous le nom de Laure Conan)." },
+  { d: 4, page: 77, oi: "Déterminer des changements et des continuités", q: "Indiquez une continuité concernant l'enseignement au Québec dans la seconde moitié du 19e siècle.", rep: "L'Église catholique reste présente à tous les niveaux d'enseignement, de l'école primaire à l'université." },
+  { d: 5, page: 91, oi: "Déterminer des causes et des conséquences", q: "Indiquez une conséquence du soulèvement des Métis de la rivière Rouge sur l'organisation du territoire canadien.", rep: "La création de la province du Manitoba en 1870." },
+  { d: 5, page: 90, oi: "Établir des faits", q: "Indiquez le nom du Métis francophone qui prend la direction du Comité national des Métis en 1869.", rep: "Louis Riel." },
+  { d: 5, page: 92, oi: "Déterminer des causes et des conséquences", q: "Indiquez une conséquence de la signature des traités numérotés pour les Premières Nations.", rep: "Elles cèdent d'immenses territoires au Canada ; en échange, le gouvernement instaure des réserves." },
+  { d: 5, page: "88 et 92", oi: "Établir des liens de causalité", q: "Expliquez comment l'expansion territoriale du Dominion entraîne la création de réserves dans l'Ouest.\n• Une étape de l'expansion territoriale du Dominion\n• Une intervention du gouvernement auprès des Premières Nations\n• Une conséquence pour les Premières Nations", rep: "En 1869, le Canada achète la Terre de Rupert et le Territoire du Nord-Ouest. Le gouvernement négocie avec les Premières Nations de l'Ouest les traités numérotés pour obtenir la cession de leurs terres. En échange, des réserves sont créées." },
+  { d: 5, page: 93, oi: "Établir des faits", q: "Indiquez le nom de la loi adoptée en 1876 qui réunit en une seule les lois concernant les Premières Nations.", rep: "La Loi sur les Indiens." },
+  { d: 5, page: 92, oi: "Établir des faits", q: "Indiquez un objectif poursuivi par les missionnaires auprès des Autochtones au 19e siècle.", rep: "Les convertir au christianisme et leur faire adopter un mode de vie occidental." },
+  { d: 5, page: 99, oi: "Déterminer des causes et des conséquences", q: "Indiquez un événement de la fin du 19e siècle qui choque les francophones du Québec et nourrit le nationalisme canadien-français.", rep: "L'abolition du droit à des écoles séparées pour les franco-catholiques du Nouveau-Brunswick (1871) ou du Manitoba (1890)." }
+];
+
 const melanger = t => { const c=[...t]; for(let i=c.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[c[i],c[j]]=[c[j],c[i]];} return c; };
 const $ = id => document.getElementById(id);
 let etat = null;
 
 function ouvrir(type){
   $("accueil").style.display="none"; $("activite").style.display="block";
-  const T={chaine:["La chaîne","Liens de causalité"],lien:["Le bon lien","Liens de causalité"],
+  const T={qr:["Questions d'examen","Réponse rédigée"],chaine:["La chaîne","Liens de causalité"],lien:["Le bon lien","Liens de causalité"],
            cc:["Cause ou conséquence ?","Causes et conséquences"],carte:["Sur la carte","Situer dans l'espace"],vf:["Vrai ou faux ?","Établir des faits"],temps:["Mets en ordre","Situer dans le temps"],paires:["Les paires","Mettre en relation des faits"],pareil:["Pareil ou pas ?","Différences et similitudes"],chg:["Ça change ?","Changements et continuités"]};
   $("act-titre").textContent=T[type][0]; $("act-oi").textContent=T[type][1];
-  const src={chaine:CHAINES,lien:LIENS,cc:CC,chg:CHG,vf:VF,temps:TEMPS,paires:PAIRES,pareil:PAREIL,carte:CARTE}[type];
+  const src={qr:QR,chaine:CHAINES,lien:LIENS,cc:CC,chg:CHG,vf:VF,temps:TEMPS,paires:PAIRES,pareil:PAREIL,carte:CARTE}[type];
   etat = { type, i:0, score:0, ordre: melanger(src.map((_,k)=>k)).slice(0,5) };
   question();
 }
@@ -594,7 +666,7 @@ function question(){
   etoiles();
   if(etat.i>=etat.ordre.length) return fin();
   const n = etat.ordre[etat.i];
-  ({chaine:()=>chaine(CHAINES[n]), lien:()=>lien(LIENS[n]),
+  ({qr:()=>qr(QR[n]), chaine:()=>chaine(CHAINES[n]), lien:()=>lien(LIENS[n]),
     carte:()=>carte(CARTE[n]), vf:()=>binaire(VF[n],["vrai","faux"]), pareil:()=>binaire(PAREIL[n],["pareil","différent"]),
     temps:()=>temps(TEMPS[n]), paires:()=>paires(PAIRES[n]), cc:()=>binaire(CC[n],["cause","conséquence"]), chg:()=>binaire(CHG[n],["changement","continuité"])})[etat.type]();
 }
@@ -717,6 +789,25 @@ function paires(q){
       <br><small>Revois ${typeof q.page==='string'?'les pages':'la page'} ${q.page} de ton cahier.</small></div><button class="suivant">Suivant ›</button>`;
     etoiles(); $("retro").querySelector(".suivant").onclick=()=>{etat.i++;question();};
   });
+}
+
+function qr(q){
+  const corps=$("act-corps");
+  corps.innerHTML = `<span class="qr-tag">${q.oi}</span>
+    <p class="qr-q">${q.q}</p>
+    <textarea class="qr-zone" aria-label="Ta réponse" placeholder="Écris ta réponse ici, comme à l'examen (rien n'est enregistré)."></textarea>
+    <button class="suivant" id="voir">Voir le corrigé</button>
+    <div id="retro"></div>
+    <div class="qr-credit">Question tirée de la banque HQC du CSSBF ; corrigé vérifié avec ton cahier.</div>`;
+  $("voir").onclick=()=>{
+    $("voir").remove();
+    $("retro").innerHTML=`<div class="qr-rep"><b>Corrigé</b><br>${q.rep}<br><small>Revois ${typeof q.page==='string'?'les pages':'la page'} ${q.page} de ton cahier.</small></div>
+      <div class="question">Compare avec ta réponse. Honnêtement :</div>
+      <div class="auto"><button class="option" data-v="1">J'avais bon</button><button class="option" data-v="0.5">En partie</button><button class="option" data-v="0">Pas encore</button></div>`;
+    $("retro").querySelectorAll(".option").forEach(b=>b.onclick=()=>{
+      etat.score+= +b.dataset.v; etoiles(); etat.i++; question();
+    });
+  };
 }
 
 function fin(){
