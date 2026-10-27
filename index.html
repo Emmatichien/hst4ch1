@@ -225,6 +225,36 @@ const CHAINES = [
       "Les bisons ont presque disparu et les colons réduisent les territoires de chasse",
       "La famine menace les Premières Nations de l'Ouest",
       "Les Premières Nations acceptent de signer des traités et de s'établir dans des réserves"
+    ]},
+  { d: 1, page: "35 et 36", sujet: "L'alliance réformiste",
+    faits: [
+      "Les réformistes du Haut-Canada et du Bas-Canada forment une alliance",
+      "L'alliance obtient la majorité à la Chambre d'assemblée",
+      "Le gouverneur Elgin demande à Baldwin et LaFontaine de former le premier gouvernement responsable"
+    ]},
+  { d: 2, page: 45, sujet: "Le chemin de fer et l'union",
+    faits: [
+      "Les colonies britanniques veulent augmenter leurs échanges commerciaux entre elles",
+      "Des hommes d'affaires proposent un chemin de fer reliant la Province du Canada à Halifax",
+      "Ce projet coûteux exige une mise en commun des ressources des colonies"
+    ]},
+  { d: 3, page: 59, sujet: "Un nouveau mode de production",
+    faits: [
+      "Les machines remplacent le travail manuel des artisans",
+      "La production est divisée en tâches simples confiées à plusieurs ouvriers",
+      "Les usines produisent plus de biens, plus rapidement"
+    ]},
+  { d: 4, page: "77 et 82", sujet: "Le nationalisme de survivance",
+    faits: [
+      "L'immigration britannique massive fait craindre l'assimilation des Canadiens français",
+      "L'Église se présente comme un rempart et un nationalisme de survivance se développe",
+      "Des auteurs produisent une littérature patriotique qui reflète cette identité"
+    ]},
+  { d: 5, page: 88, sujet: "L'expansion vers l'Ouest",
+    faits: [
+      "Le gouvernement veut offrir des terres aux colons et créer un plus grand espace économique",
+      "Le Canada achète la Terre de Rupert et le Territoire du Nord-Ouest en 1869",
+      "Ce vaste territoire entre dans le Dominion sous le nom de Territoires du Nord-Ouest"
     ]}
 ];
 
@@ -289,6 +319,36 @@ const LIENS = [
     autres: [
       "Le gouvernement menace de déporter aux États-Unis toutes les nations qui refuseraient de signer ces traités avec lui",
       "Les traités permettent aux Premières Nations de récupérer les terres déjà défrichées par les colons venus d'Ontario"
+    ]},
+  { d: 1, page: 36, a: "L'alliance Baldwin-LaFontaine", b: "Le premier gouvernement responsable (1848)",
+    bonne: "Majoritaires à la Chambre d'assemblée, les réformistes sont appelés par le gouverneur Elgin à former le premier gouvernement responsable",
+    autres: [
+      "Les réformistes menacent Londres d'une nouvelle rébellion armée si le gouverneur général refuse de leur céder tous ses pouvoirs",
+      "Les tories, ayant perdu tous leurs sièges aux élections, demandent eux-mêmes à Londres d'accorder la responsabilité ministérielle"
+    ]},
+  { d: 2, page: 45, a: "Le projet de chemin de fer vers Halifax", b: "L'idée d'unir les colonies britanniques",
+    bonne: "Ce projet très coûteux ne peut être financé que si les colonies britanniques mettent leurs ressources en commun",
+    autres: [
+      "Le Royaume-Uni refuse de financer toute voie ferrée qui ne relie pas au moins quatre colonies déjà unies entre elles",
+      "Les États-Unis acceptent de construire la ligne à condition que les colonies britanniques forment un seul pays"
+    ]},
+  { d: 3, page: 59, a: "La mécanisation", b: "La division du travail",
+    bonne: "Les machines permettent de diviser la production en tâches simples et répétitives qui ne demandent pas de formation spécialisée",
+    autres: [
+      "Les machines coûtent si cher que les entrepreneurs doivent partager chaque usine entre plusieurs artisans indépendants de la ville",
+      "Les syndicats exigent que chaque ouvrier n'accomplisse qu'une seule tâche afin de réduire le nombre d'accidents dans les usines"
+    ]},
+  { d: 4, page: 77, a: "La crainte de l'assimilation", b: "Le nationalisme de survivance",
+    bonne: "L'Église se présente comme un rempart face à l'assimilation, ce qui place la foi catholique au cœur de l'identité canadienne-française",
+    autres: [
+      "Le gouvernement fédéral oblige les Canadiens français à fréquenter des écoles catholiques afin qu'ils ne deviennent pas des protestants",
+      "Les nationalistes exigent que tous les immigrants britanniques apprennent le français dès leur arrivée dans la province de Québec"
+    ]},
+  { d: 5, page: 88, a: "La volonté de développer le Dominion", b: "L'achat de la Terre de Rupert (1869)",
+    bonne: "Le gouvernement veut offrir des terres aux colons, agrandir l'espace économique du pays et empêcher les États-Unis d'occuper l'Ouest",
+    autres: [
+      "La Compagnie de la Baie d'Hudson, ruinée par la fin de la traite des fourrures, oblige le Canada à racheter toutes ses dettes en 1869",
+      "Le Royaume-Uni exige que le Canada achète ces terres pour y installer les nombreux soldats britanniques revenus des autres colonies"
     ]}
 ];
 
@@ -323,7 +383,22 @@ const CC = [
     bonne: "conséquence", expl: "Les colons anglophones prennent le contrôle du gouvernement manitobain ; de nombreux Métis partent s'établir ailleurs dans l'Ouest." },
   { d: 5, page: 88, centre: "Le Dominion achète la Terre de Rupert et le Territoire du Nord-Ouest (1869)",
     fait: "Le gouvernement veut empêcher les États-Unis d'occuper et d'annexer ces terres laissées sans défense",
-    bonne: "cause", expl: "C'est l'une des trois raisons de l'achat, avec la volonté d'offrir des terres aux colons et de créer un plus grand espace économique." }
+    bonne: "cause", expl: "C'est l'une des trois raisons de l'achat, avec la volonté d'offrir des terres aux colons et de créer un plus grand espace économique." },
+  { d: 1, page: 35, centre: "La formation de l'alliance Baldwin-LaFontaine (1841)",
+    fait: "Les réformistes veulent donner plus de poids à leurs revendications politiques",
+    bonne: "cause", expl: "Les réformistes du Haut-Canada proposent à ceux du Bas-Canada de s'allier pour donner plus de poids à leurs revendications, dont le gouvernement responsable." },
+  { d: 2, page: 41, centre: "Le bipartisme s'installe dans la Province du Canada",
+    fait: "Les réformistes se divisent en modérés et en radicaux au début des années 1850",
+    bonne: "cause", expl: "Les modérés rejoignent les conservateurs et les radicaux deviennent les libéraux : deux camps dominent désormais la vie politique." },
+  { d: 3, page: 63, centre: "Le développement du réseau ferroviaire au 19e siècle",
+    fait: "Les marchandises peuvent être transportées pendant toute l'année, contrairement aux voies d'eau",
+    bonne: "conséquence", expl: "Le chemin de fer permet aussi d'accéder rapidement aux matières premières et d'acheminer les produits manufacturés." },
+  { d: 4, page: 72, centre: "L'exode rural dans la seconde moitié du 19e siècle",
+    fait: "Les industries des villes ont besoin d'une main-d'œuvre abondante",
+    bonne: "cause", expl: "Les usines se concentrent dans les grandes villes ; de plus en plus de gens quittent la campagne en espérant y trouver un emploi." },
+  { d: 5, page: 92, centre: "La création des pensionnats indiens",
+    fait: "Le gouvernement fédéral et les Églises veulent amener les Autochtones à abandonner leur langue et leur culture",
+    bonne: "cause", expl: "Les pensionnats isolent les enfants de leur famille et de leur communauté : ils sont un outil d'assimilation." }
 ];
 
 /* « Ça change ? » */
@@ -357,7 +432,22 @@ const CHG = [
     bonne: "changement", expl: "L'Acte pourvoyant à l'émancipation graduelle des Sauvages (1869) impose les conseils de bande, dans un but d'assimilation." },
   { d: 5, page: "37 et 92", avant: "1851 : les réserves créées au Bas-Canada doivent favoriser la conversion des Autochtones à l'agriculture",
     apres: "Années 1870 : le gouvernement fournit des outils agricoles pour inciter les Premières Nations de l'Ouest à se sédentariser",
-    bonne: "continuité", expl: "Dans les deux cas, le gouvernement cherche à amener les Autochtones à adopter un mode de vie sédentaire basé sur l'agriculture." }
+    bonne: "continuité", expl: "Dans les deux cas, le gouvernement cherche à amener les Autochtones à adopter un mode de vie sédentaire basé sur l'agriculture." },
+  { d: 2, page: 41, avant: "Années 1840 : les réformistes du Bas-Canada et du Haut-Canada sont alliés",
+    apres: "Début des années 1850 : les réformistes se divisent en modérés et en radicaux",
+    bonne: "changement", expl: "L'alliance réformiste au pouvoir depuis 1848 se défait, ce qui mène au bipartisme." },
+  { d: 2, page: "44 et 48", avant: "Début des années 1840 : la Province du Canada exporte la majorité de ses ressources au Royaume-Uni",
+    apres: "1860 : la majorité des exportations des colonies britanniques va vers les États-Unis",
+    bonne: "changement", expl: "Après la fin du protectionnisme et la signature du traité de réciprocité, les États-Unis deviennent le principal client des colonies." },
+  { d: 3, page: 66, avant: "Vers 1850 : le blé occupe une grande place dans les cultures du Bas-Canada",
+    apres: "Fin du 19e siècle : l'industrie laitière est le principal secteur agricole du Québec",
+    bonne: "changement", expl: "Les agriculteurs diversifient leurs cultures, puis privilégient la production laitière après 1870." },
+  { d: 2, page: 55, avant: "Avant 1867 : le Royaume-Uni dirige la politique extérieure et l'armée de ses colonies",
+    apres: "Après 1867 : le souverain britannique et son cabinet dirigent la politique extérieure et l'armée du Dominion",
+    bonne: "continuité", expl: "Le Dominion gère ses finances et sa politique intérieure, mais il demeure sous l'autorité britannique pour l'extérieur et l'armée." },
+  { d: 5, page: 93, avant: "1869 : une loi fédérale impose les conseils de bande dans un but d'assimilation",
+    apres: "1876 : la Loi sur les Indiens vise elle aussi l'assimilation des Autochtones",
+    bonne: "continuité", expl: "D'une loi à l'autre, le gouvernement fédéral poursuit le même objectif : l'assimilation des peuples autochtones." }
 ];
 
 /* « Vrai ou faux ? » */
@@ -381,7 +471,17 @@ const VF = [
   { d: 4, page: 82, enonce: "François-Xavier Garneau écrit son Histoire du Canada pour montrer que les Canadiens n'ont pas d'histoire.", bonne: "faux",
     expl: "C'est l'inverse : Garneau veut démontrer que les Canadiens possèdent une histoire riche, contrairement à ce qu'affirmait Durham." },
   { d: 5, page: 93, enonce: "La Loi sur les Indiens de 1876 fait des Autochtones des personnes mineures sous la tutelle du gouvernement.", bonne: "vrai",
-    expl: "Les autorités peuvent intervenir dans plusieurs aspects de leur vie par l'entremise des agents des Affaires indiennes." }
+    expl: "Les autorités peuvent intervenir dans plusieurs aspects de leur vie par l'entremise des agents des Affaires indiennes." },
+  { d: 1, page: 33, enonce: "Avec l'Acte d'Union, Londres fusionne les dettes des deux Canadas, même si celle du Haut-Canada est beaucoup plus importante.", bonne: "vrai",
+    expl: "Cette fusion des dettes fait partie des mesures de l'Acte d'Union défavorables au Bas-Canada." },
+  { d: 1, page: 36, enonce: "Avec le gouvernement responsable de 1848, la Province du Canada devient un État indépendant.", bonne: "faux",
+    expl: "Elle obtient plus d'autonomie en affaires intérieures, mais elle demeure une colonie : le Royaume-Uni gère ses affaires extérieures." },
+  { d: 2, page: 53, enonce: "Selon l'AANB, les pouvoirs résiduaires appartiennent aux gouvernements provinciaux.", bonne: "faux",
+    expl: "Les pouvoirs résiduaires, non prévus par la Constitution, vont automatiquement au gouvernement fédéral." },
+  { d: 3, page: 60, enonce: "Dans le capitalisme industriel, le capital appartient surtout à des hommes d'affaires britanniques, canadiens et américains.", bonne: "vrai",
+    expl: "Ce sont eux qui possèdent le capital nécessaire pour acquérir les moyens de production." },
+  { d: 5, page: 92, enonce: "Les traités numérotés sont conclus avec les Premières Nations de l'Ouest à partir de 1871.", bonne: "vrai",
+    expl: "Onze traités sont signés entre 1871 et 1921 ; les Premières Nations y cèdent d'immenses territoires." }
 ];
 
 /* « Mets en ordre » : dates révélées seulement dans la rétroaction. */
@@ -395,7 +495,10 @@ const TEMPS = [
   { d: 5, page: "92 et 93", items: [["La loi qui impose les conseils de bande",1869],["Le début des traités numérotés",1871],["La Loi sur les Indiens",1876],["L'entente formelle sur les pensionnats indiens",1892]] },
   { d: 4, page: "70 à 82", items: [["La loi fédérale qui reconnaît la légalité des syndicats",1872],["L'ouverture de la faculté des arts de McGill aux femmes",1884],["L'adoption de l'Acte des manufactures de Québec",1885],["La fondation de l'École littéraire de Montréal",1895]] },
   { d: 5, page: "73 à 99", items: [["La création du Manitoba",1870],["La création du ministère de l'Agriculture et de la Colonisation",1888],["L'abolition des écoles séparées au Manitoba",1890],["L'arrivée de Wilfrid Laurier au poste de premier ministre",1896]] },
-  { d: 4, page: "74 à 82", items: [["L'épidémie de typhus à la Grosse Île",1847],["La condamnation de l'Institut canadien par le pape",1868],["L'abolition du ministère de l'Instruction publique",1875],["La publication d'Angéline de Montbrun sous forme de livre",1884]] }
+  { d: 4, page: "74 à 82", items: [["L'épidémie de typhus à la Grosse Île",1847],["La condamnation de l'Institut canadien par le pape",1868],["L'abolition du ministère de l'Instruction publique",1875],["La publication d'Angéline de Montbrun sous forme de livre",1884]] },
+  { d: 3, page: "45 à 63", items: [["L'inauguration du canal de Lachine",1825],["L'inauguration du canal Welland",1829],["La fondation de la Compagnie du Grand Tronc",1852],["L'ouverture officielle de l'Intercolonial",1876]] },
+  { d: 2, page: "41 à 53", items: [["Le début de l'instabilité ministérielle",1854],["Le début de la guerre de Sécession",1861],["La formation de la Grande Coalition",1864],["L'entrée en vigueur du Code civil du Bas-Canada",1866]] },
+  { d: 4, page: "73 à 82", items: [["Le début de la publication de l'Histoire du Canada de Garneau",1845],["La fondation du journal L'Avenir",1847],["Les lettres pastorales de Mgr Bourget contre l'Institut canadien",1858],["L'inauguration du Petit Train du Nord",1879]] }
 ];
 
 /* « Les paires » */
@@ -410,7 +513,12 @@ const PAIRES = [
   { d: 4, page: 82, desc: "Auteur d'une Histoire du Canada qui répond à Durham", bonne: "François-Xavier Garneau" },
   { d: 4, page: 82, desc: "Première romancière canadienne-française, connue sous le pseudonyme de Laure Conan", bonne: "Félicité Angers" },
   { d: 5, page: 92, desc: "Chef cri des Plaines longtemps opposé à la signature du traité no 6", bonne: "Mistahimaskwa (Big Bear)" },
-  { d: 5, page: 90, desc: "Métis francophone qui prend la direction du Comité national des Métis en 1869", bonne: "Louis Riel" }
+  { d: 5, page: 90, desc: "Métis francophone qui prend la direction du Comité national des Métis en 1869", bonne: "Louis Riel" },
+  { d: 3, page: 59, desc: "Inventeur de la machine à vapeur mise au point en 1776", bonne: "James Watt" },
+  { d: 4, page: 78, desc: "Président de l'Institut canadien, il dénonce l'attitude de l'Église dans L'Avenir", bonne: "Louis-Antoine Dessaulles" },
+  { d: 4, page: 78, desc: "Journaliste qui rêve d'une liberté d'expression non limitée par l'Église", bonne: "Arthur Buies" },
+  { d: 4, page: 82, desc: "Abbé fondateur du Mouvement patriotique et littéraire de Québec", bonne: "Henri-Raymond Casgrain" },
+  { d: 3, page: 66, desc: "Laitier montréalais, le premier à livrer du lait embouteillé, en 1892", bonne: "J. J. Joubert" }
 ];
 
 /* « Pareil ou pas ? » */
@@ -434,7 +542,17 @@ const PAREIL = [
   { d: 5, page: 92, sujet: "Le traité no 6", a: "Mistahimaskwa (Big Bear)", b: "Le gouvernement du Canada", bonne: "différent",
     expl: "Le gouvernement veut obtenir la cession des terres ; Big Bear s'oppose longtemps au traité, qu'il juge néfaste pour son peuple." },
   { d: 5, page: 92, sujet: "Le mode de vie des Autochtones", a: "Les missionnaires chrétiens", b: "Le gouvernement fédéral", bonne: "pareil",
-    expl: "Les deux mettent en œuvre des moyens pour amener les Autochtones à adopter un mode de vie occidental." }
+    expl: "Les deux mettent en œuvre des moyens pour amener les Autochtones à adopter un mode de vie occidental." },
+  { d: 1, page: "32 et 35", sujet: "L'avenir des Canadiens français dans la colonie", a: "Lord Durham", b: "Louis-Hippolyte LaFontaine", bonne: "différent",
+    expl: "Durham voit dans l'union un moyen d'assimiler les Canadiens français ; LaFontaine défend leurs droits." },
+  { d: 4, page: 69, sujet: "Le salaire versé par les employeurs", a: "Les femmes ouvrières", b: "Les enfants ouvriers", bonne: "pareil",
+    expl: "Femmes et enfants forment une main-d'œuvre bon marché : les employeurs leur versent un salaire encore plus bas que celui des hommes." },
+  { d: 4, page: "76 et 78", sujet: "L'intervention du clergé dans la vie politique", a: "Mgr Ignace Bourget", b: "Arthur Buies", bonne: "différent",
+    expl: "Pour Bourget et les ultramontains, l'Église doit être présente partout ; Buies rêve d'une liberté non limitée par l'Église." },
+  { d: 5, page: 92, sujet: "Le but des missions auprès des Autochtones", a: "Les missionnaires catholiques", b: "Les missionnaires protestants", bonne: "pareil",
+    expl: "Les deux cherchent à convertir les Autochtones au christianisme et à leur faire adopter un mode de vie occidental." },
+  { d: 5, page: 90, sujet: "L'arrivée de colons dans la région de la rivière Rouge", a: "Le gouvernement canadien", b: "Les Métis", bonne: "différent",
+    expl: "Le gouvernement veut coloniser ces terres ; les Métis y voient une menace pour leurs terres, leur mode de vie et leur culture." }
 ];
 
 /* « Sur la carte » : carte redessinée à partir des données « Évolution territoriale, 1867 »
